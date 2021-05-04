@@ -1,0 +1,37 @@
+{
+  "name": "flinkey-web-components",
+  "version": "0.0.2",
+  "description": "Collection of flinkey Web Components",
+  "main": "dist/index.cjs.js",
+  "module": "dist/custom-elements/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/custom-elements/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/flinkey-web-components/flinkey-web-components.esm.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test:unit": "stencil test --spec",
+    "test:unit:watch": "stencil test --spec --watchAll",
+    "test:e2e": "stencil test --spec --e2e",
+    "test:e2e:watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@stencil/core": "^2.0.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.21",
+    "@types/puppeteer": "^5.4.3",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
+    "puppeteer": "^5.5.0"
+  }
+}
