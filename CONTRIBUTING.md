@@ -1,4 +1,4 @@
-# Contributing to Atom
+# Contributing to flinkey Web Components
 
 Huge thanks for taking the time to contribute!
 
@@ -10,6 +10,7 @@ The following is a set of guidelines for contributing to flinkey Web Components.
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
   * [Pull Requests](#pull-requests)
+  * [Semantic Versioning](#semantic-versioning)
 
 [Styleguides](#styleguides)
   * [Branch Naming Conventions](#branch-naming-conventions)
@@ -56,6 +57,22 @@ Please follow these steps to have your contribution considered by the maintainer
 3. After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing.
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
+
+### Semantic Versioning
+
+Please update the version of the flinkey Web Components library when changing any code located in the components project directory. To do so please execute one of the following commands in the components project directory:
+
+```bash
+npm version major
+```
+
+```bash
+npm version minor
+```
+
+```bash
+npm version patch
+```
 
 ## Styleguides
 
