@@ -121,7 +121,7 @@ Place class properties in the following order:
 
 ### Specs Styleguide
 
-- Include sophisticated [Jest](https://jestjs.io/)/[Puppeteer](https://pptr.dev/) specs in the corresponding `<component-name>.e2e.ts` spec file(s) of the component(s).
+- Include sophisticated [Jest](https://jestjs.io/)/[Puppeteer](https://pptr.dev/) specs in the corresponding `<component-name>.e2e.ts` and `<component-name>.spec.ts` files of the component(s).
 - Treat `describe` as a noun or situation.
 - Treat `it` as a statement about state or how an operation changes state.
 
