@@ -1,6 +1,6 @@
 {
   "name": "flinkey-web-components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Collection of flinkey Web Components",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
