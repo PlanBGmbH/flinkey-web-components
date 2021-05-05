@@ -39,11 +39,14 @@ jobs:
       - name: Build components
         run: |
           npm run build
+      - name: Remove node_modules
+        run: |
+          rm -rf node_modules/
       - name: Upload artifact
         uses: actions/upload-artifact@v2.2.2
         with:
           name: flinkey_web_components_artifact
-          path: components/dist
+          path: components
   publish:
     name: Publish
     runs-on: ubuntu-latest
