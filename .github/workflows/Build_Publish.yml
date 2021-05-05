@@ -6,10 +6,6 @@ on:
       - master
       - feature/1-setup-github-actions-pipeline-to-build-and-publish-package-to-npm
 
-defaults:
-  run:
-    working-directory: ./components
-
 jobs:
   build:
     name: Build
@@ -25,24 +21,31 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
+        working-directory: ./components
         run: |
           npm i
       - name: Check code style (Prettier)
+        working-directory: ./components
         run: |
           npm run format:check
       - name: Run Unit Tests
+        working-directory: ./components
         run: |
           npm run test:unit
       - name: Run E2E Tests
+        working-directory: ./components
         run: |
           npm run test:e2e
       - name: Build components
+        working-directory: ./components
         run: |
           npm run build
       - name: Remove node_modules
+        working-directory: ./components
         run: |
           rm -rf node_modules/
       - name: Upload artifact
+        working-directory: ./components
         uses: actions/upload-artifact@v2.2.2
         with:
           name: flinkey_web_components_artifact
