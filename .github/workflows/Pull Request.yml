@@ -8,7 +8,32 @@ on:
       - feature/gh-workflows
 
 jobs:
-  test_components:
+  check_code_style:
+    name: Check Code-Style (Prettier)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Use Node.js v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: cd components && npm i
+      - run: cd components && npm run format:check
+  test_unit:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Use Node.js v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: cd components && npm i
+      - run: cd components && npm run test:unit && npm run test:e2e
+  test_e2e:
+    name: Run E2E Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +45,7 @@ jobs:
       - run: cd components && npm i
       - run: cd components && npm run test:unit && npm run test:e2e
   build_components:
+    name: Run components build
     runs-on: ubuntu-latest
 
     steps:
