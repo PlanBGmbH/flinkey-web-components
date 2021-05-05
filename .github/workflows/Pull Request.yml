@@ -19,3 +19,14 @@ jobs:
           node-version: 14
       - run: cd components && npm i
       - run: cd components && npm run test:unit
+  build_components:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Use Node.js v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: cd components && npm i
+      - run: cd components && npm run build
