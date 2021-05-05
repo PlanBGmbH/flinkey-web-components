@@ -1,10 +1,10 @@
 name: Build & Publish Package
 
 on:
-  pull_request:
   push:
     branches:
       - master
+      - feature/1-setup-github-actions-pipeline-to-build-and-publish-package-to-npm
 
 defaults:
   run:
