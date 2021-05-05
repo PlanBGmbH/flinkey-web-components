@@ -1,11 +1,6 @@
 name: Run PR Checks
 
-# on: ["pull_request"]
-
-on:
-  push:
-    branches:
-      - feature/gh-workflows
+on: ["pull_request"]
 
 jobs:
   check_code_style:
