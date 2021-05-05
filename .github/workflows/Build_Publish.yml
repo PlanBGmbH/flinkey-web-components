@@ -11,65 +11,37 @@ defaults:
     working-directory: ./components
 
 jobs:
-  check_code_style:
-    name: Check Code-Style (Prettier)
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
-      - uses: actions/checkout@main
-      - name: Use Node.js v14
-        uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
-      - run: npm i
-      - run: npm run format:check
-  test_unit:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@main
-      - name: Use Node.js v14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - run: npm i
-      - run: npm run test:unit
-  test_e2e:
-    name: Run E2E Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@main
-      - name: Use Node.js v14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - run: npm i
-      - run: npm run test:e2e
-  build_components:
-    name: Run components build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@main
-      - name: Use Node.js v14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - run: npm i
-      - run: npm run build
-  publish_package:
-    name: Publish package on NPM
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    # Setup .npmrc file to publish to npm
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-        registry-url: 'https://registry.npmjs.org'
-    - run: npm i
-    - run: cd dist && npm publish --access public
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: |
+          npm i
+      - name: Check code style (Prettier)
+        run: |
+          npm run format:check
+      - name: Run Unit Tests
+        run: |
+          npm run test:unit
+      - name: Run E2E Tests
+        run: |
+          npm run test:e2e
+      - name: Build components
+        run: |
+          npm run build
+      - name: Publish package on NPM
+        run: |
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
