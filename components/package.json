@@ -1,7 +1,16 @@
 {
-  "name": "flinkey-web-components",
-  "version": "0.0.2",
-  "description": "Collection of flinkey Web Components",
+  "name": "@planbgmbh/flinkey-web-components",
+  "version": "0.0.4",
+  "description": "This project provides some Web Components built for usage in combination with the flinkey API.",
+  "author": "PlanB. GmbH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PlanBGmbH/flinkey-web-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PlanBGmbH/flinkey-web-components/issues"
+  },
+  "homepage": "https://github.com/PlanBGmbH/flinkey-web-components",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
