@@ -37,6 +37,9 @@ jobs:
       - name: Build components
         run: |
           npm run build
+      #- name: Copy README
+        #run: |
+          #cp ../README.md README.md
       - name: Remove node_modules
         run: |
           rm -rf node_modules/
