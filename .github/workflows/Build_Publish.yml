@@ -50,6 +50,7 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     needs: build
+    #environment: NPM
     strategy:
       matrix:
         node-version: [14.x]
@@ -65,9 +66,11 @@ jobs:
           name: flinkey_web_components_artifact
       - name: Get package version
         run: |
-          if $(dpkg --compare-versions $(dpkg-query -f='${jq .version package.json}' --show bash) gt npm show @planbgmbh/flinkey-web-components version); then echo yes ; else echo no; fi
-          jq .version package.json
-          npm show @planbgmbh/flinkey-web-components version
+          localPackageVersion=$( jq '.version' package.json )
+          echo $localPackageVersion
+          npmPackageVersion=$( npm show @planbgmbh/flinkey-web-components version )
+          echo $npmPackageVersion
+          dpkg --compare-versions $npmPackageVersion lt $localPackageVersion && echo true
       - name: Publish package on NPM
         run: |
           npm publish --access public
