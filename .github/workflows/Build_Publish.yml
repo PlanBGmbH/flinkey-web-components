@@ -69,14 +69,16 @@ jobs:
         id: check_package_version
         run: |
           localPackageVersion=$( jq -r '.version' package.json )
-          echo $localPackageVersion
+          echo "Local package version: $localPackageVersion"
           npmPackageVersion=$( npm show @planbgmbh/flinkey-web-components version )
-          echo $npmPackageVersion
+          echo "Latest package version on NPM: $npmPackageVersion"
           if $(dpkg --compare-versions $localPackageVersion gt $npmPackageVersion);
           then
             echo '::set-output name=version_increased::True'
+            echo 'Version updated'
           else
             echo '::set-output name=version_increased::False'
+            echo 'Version did not update'
           fi
           echo 
   publish:
