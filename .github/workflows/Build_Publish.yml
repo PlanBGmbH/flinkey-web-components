@@ -66,8 +66,8 @@ jobs:
           name: flinkey_web_components_artifact
       - name: Get package version
         run: |
-          ls -l
           jq .version package.json
+          npm show @planbgmbh/flinkey-web-components version
       - name: Publish package on NPM
         run: |
           npm publish --access public
