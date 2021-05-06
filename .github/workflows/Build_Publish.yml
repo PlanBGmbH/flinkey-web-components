@@ -3,7 +3,8 @@ name: Build & Publish Package
 on:
   push:
     branches:
-      - master
+      - main
+      - feature/1-setup-github-actions-pipeline-to-build-and-publish-package-to-npm
 
 jobs:
   build:
