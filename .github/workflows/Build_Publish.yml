@@ -66,7 +66,7 @@ jobs:
           name: flinkey_web_components_artifact
       - name: Get package version
         run: |
-          localPackageVersion=$( cat package.json | jq .version )
+          localPackageVersion=$( jq -r '.version' package.json )
           echo $localPackageVersion
           npmPackageVersion=$( npm show @planbgmbh/flinkey-web-components version )
           echo $npmPackageVersion
