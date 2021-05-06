@@ -63,7 +63,7 @@ jobs:
         uses: actions/download-artifact@v2.0.8
         with:
           name: flinkey_web_components_artifact
-      - name: Get package version
+      - name: Check for package version update
         run: |
           localPackageVersion=$( jq -r '.version' package.json )
           echo $localPackageVersion
