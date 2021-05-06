@@ -60,14 +60,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - name: Get package version
-        run: |
-          ls -l
-          jq .version package.json
       - name: Download artifact
         uses: actions/download-artifact@v2.0.8
         with:
           name: flinkey_web_components_artifact
+      - name: Get package version
+        run: |
+          ls -l
+          jq .version package.json
       - name: Publish package on NPM
         run: |
           npm publish --access public
