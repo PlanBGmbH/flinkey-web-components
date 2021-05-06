@@ -60,6 +60,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+      - name: Get package version
+        run: |
+          jq .version package.json
       - name: Download artifact
         uses: actions/download-artifact@v2.0.8
         with:
