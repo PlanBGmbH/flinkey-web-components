@@ -62,6 +62,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Get package version
         run: |
+          cd components
           jq .version package.json
       - name: Download artifact
         uses: actions/download-artifact@v2.0.8
