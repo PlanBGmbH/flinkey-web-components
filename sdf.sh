@@ -1,5 +1,5 @@
-gitDiff=$( git diff --exit-code origin/main -- components )
-if [ $gitDiff -eq 1 ];
+git diff --exit-code origin/main -- components; changes=$?
+if [ $changes -eq 1 ];
 then
     echo 'components directory content changed'
     pullRequestPackageVersion=$( jq -r '.version' package.json )
