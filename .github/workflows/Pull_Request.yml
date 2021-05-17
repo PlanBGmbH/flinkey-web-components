@@ -59,7 +59,7 @@ jobs:
       - name: Check for package version update
         run: |
           cd ./pr
-          git diff --exit-code origin/main HEAD -- components; changes=$?
+          git diff --exit-code main HEAD -- components; changes=$?
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
