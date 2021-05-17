@@ -3,10 +3,6 @@ name: Run PR Checks
 on: 
   [pull_request]
 
-defaults:
-  run:
-    working-directory: ./components
-
 jobs:
   validate:
     name: Validate
@@ -30,40 +26,46 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: |
+          cd ./pr/components
           npm i
       - name: Check code style (Prettier)
         run: |
+          cd ./pr/components
           npm run format:check
       - name: Run Unit Tests
         run: |
+          cd ./pr/components
           npm run test:unit
       - name: Run E2E Tests
         run: |
+          cd ./pr/components
           npm run test:e2e
       - name: Build components
         run: |
+          cd ./pr/components
           npm run build
-      - name: Checkout main
-        uses: actions/checkout@v2.3.4
-        with:
-          ref: 'main'
+      - name: Read PR package version
+        run: |
+          cd ./pr/components
+          prPackageVersion=$( jq -r '.version' package.json )
+          echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
+          echo "Current PR version: $prPackageVersion"
       - name: Read main package version
         run: |
+          cd ./main/components
           mainPackageVersion=$( jq -r '.version' package.json )
           echo "mainPackageVersion=$mainPackageVersion" >> $GITHUB_ENV
           echo "Current main version: $mainPackageVersion"
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
       - name: Check for package version update
         run: |
+          cd ./pr
           git diff --exit-code origin/main HEAD -- components; changes=$?
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
-            pullRequestPackageVersion=$( jq -r '.version' package.json )
-            echo "PR package version: $pullRequestPackageVersion"
+            echo "PR package version: ${{ env.prPackageVersion }}"
             echo "Latest package version on main: ${{ env.mainPackageVersion }}"
-            if $(dpkg --compare-versions $pullRequestPackageVersion gt ${{ env.mainPackageVersion }});
+            if $(dpkg --compare-versions ${{ env.prPackageVersion }} gt ${{ env.mainPackageVersion }});
             then
               echo 'Version updated'
             else
