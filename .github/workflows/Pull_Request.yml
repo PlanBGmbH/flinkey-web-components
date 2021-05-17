@@ -49,7 +49,10 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Check for package version update
         run: |
-          directoryDiff=$( git diff --quiet origin/main "origin/$GITHUB_HEAD_REF" -- components );
+          prBranchName="origin/$GITHUB_HEAD_REF"
+          prBranchName="${prBranchName%\"}"
+          prBranchName="${prBranchName#\"}"
+          directoryDiff=$( git diff --quiet origin/main $prBranchName -- components );
           if [ "$directoryDiff" = "1" ];
           then
             echo 'components directory content changed'
