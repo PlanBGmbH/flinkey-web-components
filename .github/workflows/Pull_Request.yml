@@ -1,7 +1,7 @@
 name: Run PR Checks
 
 on: 
-  pull_request:
+  [pull_request]
 
 defaults:
   run:
@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Check for package version update
         run: |
-          directoryDiff=$( git diff --quiet origin/main...$GITHUB_REF -- components );
+          directoryDiff=$( git diff --quiet origin/main...$GITHUB_HEAD_REF -- components );
           if [ "$directoryDiff" = "1" ];
           then
             echo 'components directory content changed'
