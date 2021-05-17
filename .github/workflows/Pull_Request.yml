@@ -24,7 +24,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.base_ref }}
+          ref: '${{ github.base_ref }}'
           path: pr
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.5
