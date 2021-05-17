@@ -52,7 +52,7 @@ jobs:
           prBranchName="origin/$GITHUB_HEAD_REF"
           prBranchName="${prBranchName%\"}"
           prBranchName="${prBranchName#\"}"
-          directoryDiff=$( git diff --quiet origin/main $prBranchName -- components );
+          directoryDiff=$( git diff --quiet origin/main HEAD -- components );
           if [ "$directoryDiff" = "1" ];
           then
             echo 'components directory content changed'
