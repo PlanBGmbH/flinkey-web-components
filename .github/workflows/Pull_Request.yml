@@ -51,6 +51,7 @@ jobs:
         run: |
           pwd
           directoryDiff=$( git diff --quiet origin/main HEAD -- components );
+          echo "$directoryDiff"
           if [ "$directoryDiff" = "1" ];
           then
             echo 'components directory content changed'
