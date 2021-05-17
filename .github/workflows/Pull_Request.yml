@@ -11,15 +11,15 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: Checkout PR branch
-        uses: actions/checkout@v2
-        with:
-          path: pr
       - name: Checkout main
         uses: actions/checkout@v2
         with:
           ref: 'main'
           path: main
+      - name: Checkout PR branch
+        uses: actions/checkout@v2
+        with:
+          path: pr
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.5
         with:
@@ -59,7 +59,7 @@ jobs:
       - name: Check for package version update
         run: |
           cd ./pr
-          git diff --exit-code main HEAD -- components; changes=$?
+          git diff --exit-code origin/main HEAD -- components; changes=$?
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
