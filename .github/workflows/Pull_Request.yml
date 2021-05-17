@@ -50,7 +50,7 @@ jobs:
       - name: Check for package version update
         run: |
           directoryDiff = $( git diff --quiet HEAD main -- components );
-          if $(directoryDiff = 1);
+          if [ $directoryDiff = 1 ];
           then
             echo 'components directory content changed'
             pullRequestPackageVersion=$( jq -r '.version' package.json )
