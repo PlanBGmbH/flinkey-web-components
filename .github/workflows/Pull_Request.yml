@@ -58,7 +58,7 @@ jobs:
           echo "Current main version: $mainPackageVersion"
       - name: Check for package version update
         run: |
-          diff pr/components main/components; changes=$?
+          diff -qr pr/components main/components; changes=$?
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
