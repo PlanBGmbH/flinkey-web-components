@@ -1,7 +1,7 @@
 name: Run PR Checks
 
 on: 
-  pull_request
+  pull_request:
 
 defaults:
   run:
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v2.3.4
         with:
-          ref: 'origin/main'
+          ref: 'main'
       - name: Read main package version
         run: |
           mainPackageVersion=$( jq -r '.version' package.json )
