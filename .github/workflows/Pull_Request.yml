@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Check for package version update
         run: |
-          directoryDiff=$( git diff --quiet origin/main HEAD -- components );
+          directoryDiff=$( git diff --quiet HEAD main -- components );
           if [ $directoryDiff = 1 ];
           then
             echo 'components directory content changed'
