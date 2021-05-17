@@ -60,6 +60,7 @@ jobs:
               echo 'Version updated'
             else
               echo 'Version did not update'
+              exit 1
             fi
           else
             echo 'components directory content did not change'
