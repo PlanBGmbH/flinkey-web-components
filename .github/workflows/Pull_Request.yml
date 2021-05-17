@@ -15,17 +15,15 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v2
+        with:
+          path: pr
       - name: Checkout main
         uses: actions/checkout@v2
         with:
           ref: 'main'
           path: main
-
-      - name: Checkout PR branch
-        uses: actions/checkout@v2
-        with:
-          ref: '${{ github.base_ref }}'
-          path: pr
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.5
         with:
