@@ -1,6 +1,7 @@
 name: Run PR Checks
 
-on: ["pull_request"]
+on: 
+  pull_request
 
 defaults:
   run:
@@ -35,3 +36,32 @@ jobs:
       - name: Build components
         run: |
           npm run build
+      - name: Checkout main
+        uses: actions/checkout@v2.3.4
+        with:
+          ref: 'origin/main'
+      - name: Read main package version
+        run: |
+          mainPackageVersion=$( jq -r '.version' package.json )
+          echo '::set-env name=mainPackageVersion::$mainPackageVersion'
+          echo "Current main version: $mainPackageVersion"
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Check for package version update
+        run: |
+          directoryDiff = $( git diff --quiet HEAD main -- components );
+          if $(directoryDiff = 1);
+          then
+            echo 'components directory content changed'
+            pullRequestPackageVersion=$( jq -r '.version' package.json )
+            echo "PR package version: $pullRequestPackageVersion"
+            echo "Latest package version on main: ${{ env.mainPackageVersion }}"
+            if $(dpkg --compare-versions $pullRequestPackageVersion gt ${{ env.mainPackageVersion }});
+            then
+              echo 'Version updated'
+            else
+              echo 'Version did not update'
+            fi
+          else
+            echo 'components directory content did not change'
+          fi
