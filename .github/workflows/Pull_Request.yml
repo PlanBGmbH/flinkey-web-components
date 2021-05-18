@@ -59,6 +59,12 @@ jobs:
           jq '.version = "null"' ./pr/components/package-lock.json
           jq '.version = "null"' ./main/components/package.json
           jq '.version = "null"' ./main/components/package-lock.json
+
+          echo "version pr: $( jq -r '.version' ./pr/components/package.json )"
+          echo "version main: $( jq -r '.version' ./main/components/package.json )"
+          echo "lock vers pr: $( jq -r '.version' ./pr/components/package-lock.json )"
+          echo "lock vers main: $( jq -r '.version' ./main/components/package-lock.json )"
+
           diff -qr pr/components main/components && changes=0 || changes=1
           jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json
           jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json
