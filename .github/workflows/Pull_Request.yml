@@ -49,6 +49,8 @@ jobs:
           fi
       - name: Check package version update
         run: |
+          mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
+          echo "Main package version: $mainPackageVersion"
           echo "Reset version of package.json and package-lock.json for diff"
           echo "$( jq '.version = "null"' ./pr/components/package.json )" > ./pr/components/package.json
           echo "$( jq '.version = "null"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
@@ -62,8 +64,6 @@ jobs:
           echo "Update prPackageVersion environment variable"
           prPackageVersion=$( jq -r '.version' ./pr/components/package.json )
           echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
-          echo "Read main package version"
-          mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
