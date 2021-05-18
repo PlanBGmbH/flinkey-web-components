@@ -108,7 +108,7 @@ jobs:
         run: |
           packageVersion=$( jq -r '.version' package.json )
           echo "packageVersion=$packageVersion" >> $GITHUB_ENV
-          zipName="flinkey_web_components_$packageVersion.zip"
+          zipName="flinkey_web_components_${packageVersion}.zip"
           echo "zipName=$zipName" >> $GITHUB_ENV
           zip -r $zipName *
       - name: Create GitHub release
