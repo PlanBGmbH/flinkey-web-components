@@ -55,10 +55,10 @@ jobs:
           echo "Current main version: $mainPackageVersion"
       - name: Check package version update
         run: |
-          jq '.version = "null"' ./pr/components/package.json|sponge ./pr/components/package.json
-          jq '.version = "null"' ./pr/components/package-lock.json|sponge ./pr/components/package-lock.json
-          jq '.version = "null"' ./main/components/package.json|sponge ./main/components/package.json
-          jq '.version = "null"' ./main/components/package-lock.json|sponge ./main/components/package-lock.json
+          echo "$( jq '.version = "null"' ./pr/components/package.json )" > ./pr/components/package.json
+          echo "$( jq '.version = "null"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
+          echo "$( jq '.version = "null"' ./main/components/package.json )" > ./main/components/package.json
+          echo "$( jq '.version = "null"' ./main/components/package-lock.json )" > ./main/components/package-lock.json
 
           echo "version pr: $( jq -r '.version' ./pr/components/package.json )"
           echo "version main: $( jq -r '.version' ./main/components/package.json )"
@@ -66,8 +66,8 @@ jobs:
           echo "lock vers main: $( jq -r '.version' ./main/components/package-lock.json )"
 
           diff -qr pr/components main/components && changes=0 || changes=1
-          jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json|sponge ./pr/components/package.json
-          jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json|sponge ./pr/components/package-lock.json
+          echo "$( jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json )" > ./pr/components/package.json
+          echo "$( jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
