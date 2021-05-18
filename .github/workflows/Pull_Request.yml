@@ -56,8 +56,16 @@ jobs:
           mainPackageVersion=$( jq -r '.version' package.json )
           echo "mainPackageVersion=$mainPackageVersion" >> $GITHUB_ENV
           echo "Current main version: $mainPackageVersion"
-      - name: Check for package version update
+      - name: Check package version
         run: |
+          prPackageLockVersion=$( jq -r '.version' ./main/components/package-lock.json )
+          if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq $prPackageLockVersion);
+          then
+            echo 'Package lock version and package version are equal'
+          else
+            echo 'Package lock version and package version are not equal'
+            exit 1
+          fi
           diff -r pr/components main/components && changes=0 || changes=1
           if [ $changes -eq 1 ];
           then
