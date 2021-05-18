@@ -110,7 +110,7 @@ jobs:
           echo "packageVersion=$packageVersion" >> $GITHUB_ENV
           zipName="flinkey_web_components_${packageVersion}.zip"
           echo "zipName=$zipName" >> $GITHUB_ENV
-          zip -r $zipName *
+          zip -r $zipName * -x "CHANGELOG.md"
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
