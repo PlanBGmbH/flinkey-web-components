@@ -24,26 +24,6 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: |
-          cd ./pr/components
-          npm i
-      - name: Check code style (Prettier)
-        run: |
-          cd ./pr/components
-          npm run format:check
-      - name: Run Unit Tests
-        run: |
-          cd ./pr/components
-          npm run test:unit
-      - name: Run E2E Tests
-        run: |
-          cd ./pr/components
-          npm run test:e2e
-      - name: Build components
-        run: |
-          cd ./pr/components
-          npm run build
       - name: Read PR package version
         run: |
           cd ./pr/components
@@ -73,9 +53,9 @@ jobs:
           mainPackageVersion=$( jq -r '.version' package.json )
           echo "mainPackageVersion=$mainPackageVersion" >> $GITHUB_ENV
           echo "Current main version: $mainPackageVersion"
-      - name: Check package version
+      - name: Check package version update
         run: |
-          diff -r pr/components main/components && changes=0 || changes=1
+          diff -r --exclude=package.json --exclude=package-lock.json pr/components main/components && changes=0 || changes=1
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
@@ -91,3 +71,23 @@ jobs:
           else
             echo 'components directory content did not change'
           fi
+      - name: Install dependencies
+        run: |
+          cd ./pr/components
+          npm i
+      - name: Check code style (Prettier)
+        run: |
+          cd ./pr/components
+          npm run format:check
+      - name: Run Unit Tests
+        run: |
+          cd ./pr/components
+          npm run test:unit
+      - name: Run E2E Tests
+        run: |
+          cd ./pr/components
+          npm run test:e2e
+      - name: Build components
+        run: |
+          cd ./pr/components
+          npm run build
