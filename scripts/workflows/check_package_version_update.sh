@@ -14,6 +14,7 @@ echo "$( jq '.version = "$prPackageVersion"' ./pr/components/package.json )" > .
 echo "$( jq '.version = "$prPackageLockVersion"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
 echo "Update prPackageVersion environment variable"
 currentPrPackageVersion=$( jq -r '.version' ./pr/components/package.json )
+echo "PR package version: $currentPrPackageVersion"
 echo "prPackageVersion=$currentPrPackageVersion" >> $GITHUB_ENV
 if [ $changes -eq 1 ];
 then
