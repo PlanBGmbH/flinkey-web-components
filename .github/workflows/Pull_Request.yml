@@ -58,7 +58,7 @@ jobs:
           echo "Current main version: $mainPackageVersion"
       - name: Check package version
         run: |
-          cd ./pr/components
+          cd ./main/components
           prPackageLockVersion=$( jq -r '.version' package-lock.json )
           cd ../../
           echo "foobar $prPackageLockVersion"
