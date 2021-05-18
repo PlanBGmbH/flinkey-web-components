@@ -62,6 +62,10 @@ jobs:
           diff -qr pr/components main/components && changes=0 || changes=1
           echo "$( jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json )" > ./pr/components/package.json
           echo "$( jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
+          prPackageVersion=$( jq -r '.version' ./pr/components/package.json )
+          echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
+          mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
+          echo "mainPackageVersion=$mainPackageVersion" >> $GITHUB_ENV
           if [ $changes -eq 1 ];
           then
             echo 'components directory content changed'
