@@ -118,9 +118,7 @@ jobs:
           bodyFile: "CHANGELOG.md"
           name: ${{ env.packageVersion }}
           tag: "v${{ env.packageVersion }}"
-          token: ${{ env.GITHUB_TOKEN }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Remove zip artifact
         run: |
           rm ${{ env.zipName }}
