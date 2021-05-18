@@ -59,12 +59,6 @@ jobs:
           echo "$( jq '.version = "null"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
           echo "$( jq '.version = "null"' ./main/components/package.json )" > ./main/components/package.json
           echo "$( jq '.version = "null"' ./main/components/package-lock.json )" > ./main/components/package-lock.json
-
-          echo "version pr: $( jq -r '.version' ./pr/components/package.json )"
-          echo "version main: $( jq -r '.version' ./main/components/package.json )"
-          echo "lock vers pr: $( jq -r '.version' ./pr/components/package-lock.json )"
-          echo "lock vers main: $( jq -r '.version' ./main/components/package-lock.json )"
-
           diff -qr pr/components main/components && changes=0 || changes=1
           echo "$( jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json )" > ./pr/components/package.json
           echo "$( jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
@@ -82,7 +76,7 @@ jobs:
             fi
           else
             echo 'components directory content did not change'
-            if $(dpkg --compare-versions ${{ env.prPackageVersion }} neq ${{ env.mainPackageVersion }});
+            if $(dpkg --compare-versions ${{ env.prPackageVersion }} ne ${{ env.mainPackageVersion }});
             then
               echo 'Version changed but should not'
               exit 1
