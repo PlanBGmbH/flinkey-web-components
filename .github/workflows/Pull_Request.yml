@@ -49,8 +49,7 @@ jobs:
           fi
       - name: Check package version update
         run: |
-          ls -l
-          ./.github/workflows/check_package_version_update.sh
+          ./pr/scripts/workflows/check_package_version_update.sh
       - name: Install dependencies
         run: |
           cd ./pr/components
