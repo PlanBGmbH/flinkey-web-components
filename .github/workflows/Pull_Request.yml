@@ -66,10 +66,10 @@ jobs:
           echo "lock vers main: $( jq -r '.version' ./main/components/package-lock.json )"
 
           diff -qr pr/components main/components && changes=0 || changes=1
-          jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json
-          jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json
           if [ $changes -eq 1 ];
           then
+            jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json
+            jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json
             echo 'components directory content changed'
             echo "PR package version: ${{ env.prPackageVersion }}"
             echo "Latest package version on main: ${{ env.mainPackageVersion }}"
@@ -81,6 +81,8 @@ jobs:
               exit 1
             fi
           else
+            jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json
+            jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json
             echo 'components directory content did not change'
             if $(dpkg --compare-versions ${{ env.prPackageVersion }} neq ${{ env.mainPackageVersion }});
             then
