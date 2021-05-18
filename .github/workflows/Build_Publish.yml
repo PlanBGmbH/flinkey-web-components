@@ -109,18 +109,22 @@ jobs:
         run: |
           packageVersion=$( jq -r '.version' package.json )
           echo "packageVersion=$packageVersion" >> $GITHUB_ENV
-          zip -r flinkey_web_components_artifact.zip *
+          zipName="flinkey_web_components_$packageVersion.zip"
+          echo "zipName=$zipName" >> $GITHUB_ENV
+          zip -r $zipName *
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "flinkey_web_components_artifact.zip"
           bodyFile: "CHANGELOG.md"
           name: ${{ env.packageVersion }}
-          tag: ${{ env.packageVersion }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "v${{ env.packageVersion }}"
+          token: ${{ env.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Remove zip artifact
         run: |
-          rm flinkey_web_components_artifact.zip
+          rm ${{ env.zipName }}
       - name: Publish package on NPM
         run: |
           npm publish --access public
