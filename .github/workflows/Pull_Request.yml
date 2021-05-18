@@ -76,6 +76,13 @@ jobs:
             fi
           else
             echo 'components directory content did not change'
+            if $(dpkg --compare-versions ${{ env.prPackageVersion }} neq ${{ env.mainPackageVersion }});
+            then
+              echo 'Version changed but should not'
+              exit 1
+            else
+              echo 'Version did not change'
+            fi
           fi
       - name: Install dependencies
         run: |
