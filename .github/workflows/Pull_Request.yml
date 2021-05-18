@@ -61,7 +61,11 @@ jobs:
           cd ./main/components
           prPackageLockVersion=$( jq -r '.version' package-lock.json )
           cd ../../
-          echo "foobar $prPackageLockVersion"
+          cd ./pr/components
+          mainPackageLockVersion=$( jq -r '.version' package-lock.json )
+          cd ../../
+          echo "prPackageLockVersion $prPackageLockVersion"
+          echo "mainPackageLockVersion $mainPackageLockVersion"
           if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq $prPackageLockVersion);
           then
             echo 'PR package lock version and PR package version are equal'
