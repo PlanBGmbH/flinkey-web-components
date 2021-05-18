@@ -58,7 +58,9 @@ jobs:
           echo "Current main version: $mainPackageVersion"
       - name: Check package version
         run: |
-          prPackageLockVersion=$( jq -r '.version' ./pr/components/package-lock.json )
+          cd ./pr/components
+          prPackageLockVersion=$( jq -r '.version' package-lock.json )
+          cd ../../
           echo "foobar $prPackageLockVersion"
           if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq $prPackageLockVersion);
           then
