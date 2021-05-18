@@ -85,7 +85,6 @@ jobs:
             echo '::set-output name=version_increased::False'
             echo 'Version did not update'
           fi
-          echo 
   publish:
     name: Publish
     runs-on: ubuntu-latest
