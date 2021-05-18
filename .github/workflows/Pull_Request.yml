@@ -59,6 +59,7 @@ jobs:
       - name: Check package version
         run: |
           prPackageLockVersion=$( jq -r '.version' ./main/components/package-lock.json )
+          echo "foobar $prPackageLockVersion"
           if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq $prPackageLockVersion);
           then
             echo 'Package lock version and package version are equal'
