@@ -114,7 +114,7 @@ jobs:
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "flinkey_web_components_artifact.zip"
+          artifacts: ${{ env.zipName }}
           bodyFile: "CHANGELOG.md"
           name: ${{ env.packageVersion }}
           tag: "v${{ env.packageVersion }}"
