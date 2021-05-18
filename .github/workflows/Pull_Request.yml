@@ -62,9 +62,9 @@ jobs:
           echo "foobar $prPackageLockVersion"
           if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq $prPackageLockVersion);
           then
-            echo 'Package lock version and package version are equal'
+            echo 'PR package lock version and PR package version are equal'
           else
-            echo 'Package lock version and package version are not equal'
+            echo 'PR package lock version and PR package version are not equal'
             exit 1
           fi
           diff -r pr/components main/components && changes=0 || changes=1
