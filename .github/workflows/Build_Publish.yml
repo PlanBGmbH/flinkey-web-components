@@ -123,11 +123,12 @@ jobs:
       - name: Create GitHub release artifact
         run: |
           npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
-          tarballUrl=$( jq '.tarball' $npmPackageData )
+          tarballUrl=$( jq '.dist.tarball' $npmPackageData )
           wget --quiet --method GET -O npmPackage.tgz $tarballUrl
           mkdir unpackedPackage
           tar -xvzf ./npmPackage.tgz -C ./unpackedPackage
-          zip -r ${{ env.zipName }} *
+          cd ./unpackedPackage/package
+          zip -r "../../${{ env.zipName }}" *
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
