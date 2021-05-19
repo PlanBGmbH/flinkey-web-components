@@ -26,7 +26,7 @@ The following is a set of guidelines for contributing to flinkey Web Components.
 
 ### Reporting Bugs
 
-When you are creating a bug report, please fill out [the required template](https://github.com/PlanBGmbH/flinkey-web-components/blob/main/.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
+When you are creating a bug report, please fill out [the required template](./.github/ISSUE_TEMPLATE/bug_report.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -37,7 +37,7 @@ When you are creating a bug report, please fill out [the required template](http
 
 ### Suggesting Enhancements
 
-When you are creating an enhancement suggestion, please fill in [the template](https://github.com/PlanBGmbH/flinkey-web-components/blob/main/.github/ISSUE_TEMPLATE/feature_request.md).
+When you are creating an enhancement suggestion, please fill in [the template](./.github/ISSUE_TEMPLATE/feature_request.md).
 
 #### Before Submitting An Enhancement Suggestion
 
@@ -53,7 +53,7 @@ The process described here has several goals:
 
 Please follow these steps to have your contribution considered by the maintainers:
 
-1. Follow all instructions in [the template](https://github.com/PlanBGmbH/flinkey-web-components/blob/main/.github/pull_request_template.md)
+1. Follow all instructions in [the template](./.github/pull_request_template.md)
 2. Follow the [styleguides](#styleguides)
 3. After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing.
 
@@ -80,6 +80,7 @@ npm version patch
 Please update the [changelog](./components/CHANGELOG.md) of the flinkey Web Components library when changing any code located in the components project directory.
 To do so please remove all the content of the [changelog](./components/CHANGELOG.md) and write down all your changes that directly concern the components directory.
 A good changelog should also contain links to the issue(s).
+Note: The entire content of the [changelog](./components/CHANGELOG.md) will be used to create a [GitHub release](https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) by the `Build & Publish Package` workflow after your pull request was merged.
 
 ## Styleguides
 
