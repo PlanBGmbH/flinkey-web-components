@@ -122,13 +122,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create GitHub release artifact
         run: |
-          packageVersion=$( jq -r '.version' package.json )
-          echo "packageVersion=$packageVersion" >> $GITHUB_ENV
-          zipName="flinkey-web-components-v${packageVersion}.zip"
-          echo "zipName=$zipName" >> $GITHUB_ENV
-          changelog=$(<CHANGELOG.md)
-          echo "changelog=$changelog" >> $GITHUB_ENV
-          rm CHANGELOG.md
+          npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
+          tarballUrl=$( jq '.tarball' $npmPackageData )
+          wget --quiet --method GET -O npmPackage.tgz $tarballUrl
+          mkdir unpackedPackage
+          tar -xvzf ./npmPackage.tgz -C ./unpackedPackage
+          zip -r ${{ env.zipName }} *
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
