@@ -77,8 +77,8 @@ npm version patch
 
 ### Changelog
 
-Please update the CHANGELOG.md of the flinkey Web Components library when changing any code located in the components project directory.
-To do so please remove all the content of the CHANGELOG.md and write down all your changes that directly concern the components directory.
+Please update the [Changelog](./components/CHANGELOG.md) of the flinkey Web Components library when changing any code located in the components project directory.
+To do so please remove all the content of the [Changelog](./components/CHANGELOG.md) and write down all your changes that directly concern the components directory.
 A good changelog should also contain links to the issue(s).
 
 ## Styleguides
