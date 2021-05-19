@@ -91,6 +91,8 @@ jobs:
     needs: pre_publish_validation
     if: ${{ needs.pre_publish_validation.outputs.version_increased == 'True' }}
     environment: NPM
+    permissions:
+      contents: write
     strategy:
       matrix:
         node-version: [14.x]
