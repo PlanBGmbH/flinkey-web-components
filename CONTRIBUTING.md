@@ -11,6 +11,7 @@ The following is a set of guidelines for contributing to flinkey Web Components.
   * [Suggesting Enhancements](#suggesting-enhancements)
   * [Pull Requests](#pull-requests)
   * [Semantic Versioning](#semantic-versioning)
+  * [Changelog](#changelog)
 
 [Styleguides](#styleguides)
   * [Branch Naming Conventions](#branch-naming-conventions)
@@ -73,6 +74,11 @@ npm version minor
 ```bash
 npm version patch
 ```
+
+### Changelog
+
+Please update the CHANGELOG.md of the flinkey Web Components library when changing any code located in the components project directory.
+To do so please remove all the content of the CHANGELOG.md and write down all your changes that directly concern the components directory.
 
 ## Styleguides
 
