@@ -80,6 +80,7 @@ npm version patch
 Please update the [changelog](./components/CHANGELOG.md) of the flinkey Web Components library when changing any code located in the components project directory.
 To do so please remove all the content of the [changelog](./components/CHANGELOG.md) and write down all your changes that directly concern the components directory.
 A good changelog should also contain links to the issue(s).
+
 Note: The entire content of the [changelog](./components/CHANGELOG.md) will be used to create a [GitHub release](https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) by the `Build & Publish Package` workflow after your pull request was merged.
 
 ## Styleguides
