@@ -124,6 +124,8 @@ jobs:
       #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create GitHub release artifact
         run: |
+          touch CHANGELOG.md
+          echo ${{ env.changelog }} >> CHANGELOG.md
           npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
           tarballUrl=$( jq '.dist.tarball' $npmPackageData )
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
@@ -135,7 +137,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: ${{ env.zipName }}
-          body: ${{ env.changelog }}
+          bodyFile: "CHANGELOG.md"
           name: ${{ env.packageVersion }}
           tag: "v${{ env.packageVersion }}"
           token: ${{ secrets.GITHUB_TOKEN }}
