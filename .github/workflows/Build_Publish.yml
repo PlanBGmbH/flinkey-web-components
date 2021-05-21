@@ -126,13 +126,11 @@ jobs:
         run: |
           touch CHANGELOG.md
           echo "${{ env.changelog }}" >> CHANGELOG.md
-          # npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
-          npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/0.0.9" )
+          npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
           tarballUrl=$( jq '.dist.tarball' $npmPackageData )
-          echo $tarballUrl
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
           mkdir unpackedPackage
-          tar -xvzf ./npmPackage.tgz -C ./unpackedPackage
+          tar -xvz ./npmPackage.tgz -C ./unpackedPackage
           cd ./unpackedPackage/package
           zip -r "../../${{ env.zipName }}" *
       - name: Create GitHub release
