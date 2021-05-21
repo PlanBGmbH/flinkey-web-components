@@ -126,8 +126,8 @@ jobs:
         run: |
           touch CHANGELOG.md
           echo "${{ env.changelog }}" >> CHANGELOG.md
-          npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
-          tarballUrl=$( jq '.dist.tarball' $npmPackageData )
+          wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" npmPackageData.json
+          tarballUrl=$( jq '.dist.tarball' npmPackageData.json )
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
           mkdir unpackedPackage
           tar -zxvf ./npmPackage.tgz -C ./unpackedPackage
