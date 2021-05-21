@@ -117,16 +117,16 @@ jobs:
           echo "$changelog" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           rm CHANGELOG.md
-      #- name: Publish package on NPM
-      #  run: |
-      #    npm publish --access public
-      #  env:
-      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish package on NPM
+        run: |
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create GitHub release artifact
         run: |
           touch CHANGELOG.md
           echo "${{ env.changelog }}" >> CHANGELOG.md
-          wget --quiet --method GET -O npmPackageData.json "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/0.0.9"
+          wget --quiet --method GET -O npmPackageData.json "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}"
           tarballUrl=$( jq -r '.dist.tarball' npmPackageData.json )
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
           mkdir unpackedPackage
