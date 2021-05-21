@@ -113,7 +113,9 @@ jobs:
           zipName="flinkey-web-components-v${packageVersion}.zip"
           echo "zipName=$zipName" >> $GITHUB_ENV
           changelog=$(<CHANGELOG.md)
-          echo "changelog=$changelog" >> $GITHUB_ENV
+          echo "changelog<<EOF" >> $GITHUB_ENV
+          echo "$changelog" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           rm CHANGELOG.md
       - name: Publish package on NPM
         run: |
