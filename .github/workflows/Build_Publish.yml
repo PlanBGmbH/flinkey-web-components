@@ -117,11 +117,11 @@ jobs:
           echo "$changelog" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           rm CHANGELOG.md
-      - name: Publish package on NPM
-        run: |
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #- name: Publish package on NPM
+      #  run: |
+      #    npm publish --access public
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Create GitHub release artifact
         run: |
           npmPackageData=$( wget --quiet --method GET "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}" )
