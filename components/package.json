@@ -1,6 +1,6 @@
 {
   "name": "@planbgmbh/flinkey-web-components",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "This project provides some Web Components built for usage in combination with the flinkey API.",
   "author": "PlanB. GmbH",
   "repository": {
