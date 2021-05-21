@@ -130,7 +130,7 @@ jobs:
           tarballUrl=$( jq '.dist.tarball' $npmPackageData )
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
           mkdir unpackedPackage
-          tar -xvz ./npmPackage.tgz -C ./unpackedPackage
+          tar -zxvf ./npmPackage.tgz -C ./unpackedPackage
           cd ./unpackedPackage/package
           zip -r "../../${{ env.zipName }}" *
       - name: Create GitHub release
