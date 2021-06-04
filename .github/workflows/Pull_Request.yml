@@ -20,14 +20,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: pr
-          fetch-depth: 0
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Check commit authors
         run: |
-          echo ${{ toJson(github) }}
+          echo ${{ toJson(github.event.pull_request) }}
           wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
           committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
           authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
