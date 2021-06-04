@@ -26,7 +26,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Check commit authors
         run: |
-          dependabotName="dependabot[bot]"
+          dependabotName="BernhardHuberPlanBGmbH"
           if [ "${{ github.event.pull_request.user.login }}" = "$dependabotName" ];
           then
             wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
