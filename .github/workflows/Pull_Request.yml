@@ -42,8 +42,8 @@ jobs:
               echo 'There are too many committers and/or authors for a valid PR branch by $dependabotName'
               exit 1
             else
-              committer=$( jq '.[0]' <<< $committers )
-              author=$( jq '.[0]' <<< $authors )
+              committer=$( jq -r '.[0]' <<< $committers )
+              author=$( jq -r '.[0]' <<< $authors )
               echo "Committer: $committer"
               echo "Author: $author"
               if [ $committer != "$dependabotName" ] || [ $author != "$dependabotName" ];
