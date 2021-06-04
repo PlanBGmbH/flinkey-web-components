@@ -28,7 +28,7 @@ jobs:
       - name: Check commit authors
         run: |
           wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
-          data=$( jq -r  'unique_by(.[].committer.login)' commits.json ) 
+          data=$( jq -r  '.[] | .committer' commits.json )
           echo "${data}"
       - name: Read PR package version
         run: |
