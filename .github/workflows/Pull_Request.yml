@@ -52,24 +52,29 @@ jobs:
                 exit 1
               else
                 echo 'Committer and author are valid'
+                echo "skipVersionValidation=True" >> $GITHUB_ENV
               fi
             fi
           else
             echo "$dependabotName was not detected as PR creator"
+            echo "skipVersionValidation=False" >> $GITHUB_ENV
           fi
       - name: Read PR package version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           cd ./pr/components
           prPackageVersion=$( jq -r '.version' package.json )
           echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
           echo "Current PR version: $prPackageVersion"
       - name: Read PR package-lock version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           cd ./pr/components
           prPackageLockVersion=$( jq -r '.version' package-lock.json )
           echo "prPackageLockVersion=$prPackageLockVersion" >> $GITHUB_ENV
           echo "Current PR lock version: $prPackageLockVersion"
       - name: Check PR package version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           echo "PR lock version ${{ env.prPackageLockVersion }}"
           echo "PR version ${{ env.prPackageVersion }}"
@@ -81,6 +86,7 @@ jobs:
             exit 1
           fi
       - name: Check package version update
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
           echo "Main package version: $mainPackageVersion"
