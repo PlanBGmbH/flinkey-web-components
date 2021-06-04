@@ -26,29 +26,32 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Check commit authors
         run: |
-          echo ${{ toJson(github.event.pull_request.user.login) }}
-          wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
-          committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
-          authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
-          committersLength=$( jq '. | length' <<< $committers )
-          authorsLength=$( jq '. | length' <<< $authors )
-          echo "Committer count: $committersLength"
-          echo "Author count: $authorsLength"
-          if [ $committersLength -gt 1 OR $authorsLength -gt 1 ];
+          dependabotName="dependabot[bot]"
+          if [ "${{ github.event.pull_request.user.login }}" = "$dependabotName" ];
           then
-            echo 'There are too many committers and/or authors for a valid PR branch by dependabot[bot]'
-            exit 1
-          else
-            committer=$( jq '.[0]' <<< $committers )
-            author=$( jq '.[0]' <<< $authors )
-            echo "Committer: $committer"
-            echo "Author: $author"
-            if [ $committer != "dependabot[bot]" OR $author != "dependabot[bot]" ];
+            wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
+            committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
+            authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
+            committersLength=$( jq '. | length' <<< $committers )
+            authorsLength=$( jq '. | length' <<< $authors )
+            echo "Committer count: $committersLength"
+            echo "Author count: $authorsLength"
+            if [ $committersLength -gt 1 OR $authorsLength -gt 1 ];
             then
-              echo 'Committer and/or author does not have a valid value'
+              echo 'There are too many committers and/or authors for a valid PR branch by $dependabotName'
               exit 1
             else
-              echo 'Committer and author are valid'
+              committer=$( jq '.[0]' <<< $committers )
+              author=$( jq '.[0]' <<< $authors )
+              echo "Committer: $committer"
+              echo "Author: $author"
+              if [ $committer != "$dependabotName" OR $author != "$dependabotName" ];
+              then
+                echo 'Committer and/or author does not have a valid value'
+                exit 1
+              else
+                echo 'Committer and author are valid'
+              fi
             fi
           fi
       - name: Read PR package version
