@@ -33,8 +33,8 @@ jobs:
             wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
             committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
             authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
-            committersLength=$( jq '. | length' <<< $committers )
-            authorsLength=$( jq '. | length' <<< $authors )
+            committersLength=$( jq '. | length' <<< "$committers" )
+            authorsLength=$( jq '. | length' <<< "$authors" )
             echo "Committer count: $committersLength"
             echo "Author count: $authorsLength"
             if [ $committersLength -gt 1 ] || [ $authorsLength -gt 1 ];
