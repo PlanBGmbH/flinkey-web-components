@@ -30,8 +30,8 @@ jobs:
           if [ "${{ github.event.pull_request.user.login }}" = "$dependabotName" ];
           then
             wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
-            committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
-            authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
+            committers=$( jq -r  '.[] | .committer | [.login] | unique' commits.json )
+            authors=$( jq -r  '.[] | .author | [.login] | unique' commits.json )
             committersLength=$( jq '. | length' <<< $committers )
             authorsLength=$( jq '. | length' <<< $authors )
             echo "Committer count: $committersLength"
