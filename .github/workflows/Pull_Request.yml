@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Check commit authors
         run: |
-          echo $( jq -r '.event' ${{ toJson(github) }} )
+          echo ${{ toJson(github.event) }}
       - name: Read PR package version
         run: |
           cd ./pr/components
