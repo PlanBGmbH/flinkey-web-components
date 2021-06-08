@@ -27,6 +27,7 @@ jobs:
       - name: Check commit authors
         run: |
           dependabotName="dependabot[bot]"
+          committerName="web-flow"
           if [ "${{ github.event.pull_request.user.login }}" = "$dependabotName" ];
           then
             echo "$dependabotName was detected as PR creator"
@@ -46,9 +47,9 @@ jobs:
               author=$( jq -r '.[0]' <<< $authors )
               echo "Committer: $committer"
               echo "Author: $author"
-              if [ $committer != "$dependabotName" ] || [ $author != "$dependabotName" ];
+              if [ $committer != "$committerName" ] || [ $author != "$dependabotName" ];
               then
-                echo 'Committer and/or author does not have a valid value'
+                echo 'Committer and/or author do not have a valid value'
                 exit 1
               else
                 echo 'Committer and author are valid'
@@ -145,4 +146,3 @@ jobs:
         run: |
           cd ./pr/components
           npm run build
-          
