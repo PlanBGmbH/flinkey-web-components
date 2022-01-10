@@ -14,12 +14,12 @@ jobs:
         working-directory: ./components
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
       - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@v2.5.1
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -47,7 +47,7 @@ jobs:
         run: |
           rm -rf node_modules/
       - name: Upload artifact
-        uses: actions/upload-artifact@v2.2.2
+        uses: actions/upload-artifact@v2.3.1
         with:
           name: flinkey_web_components_artifact
           path: components
@@ -59,15 +59,15 @@ jobs:
       version_increased: ${{ steps.check_package_version.outputs.version_increased }}
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
       - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@v2.5.1
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - name: Download artifact
-        uses: actions/download-artifact@v2.0.8
+        uses: actions/download-artifact@v2.1.0
         with:
           name: flinkey_web_components_artifact
       - name: Check for package version update
@@ -95,15 +95,15 @@ jobs:
       contents: write
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
       - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.5
+        uses: actions/setup-node@v2.5.1
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - name: Download artifact
-        uses: actions/download-artifact@v2.0.8
+        uses: actions/download-artifact@v2.1.0
         with:
           name: flinkey_web_components_artifact
       - name: Prepare GitHub release
