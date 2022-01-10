@@ -24,19 +24,58 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Check commit authors
+        run: |
+          dependabotName="dependabot[bot]"
+          committerName="web-flow"
+          if [ "${{ github.event.pull_request.user.login }}" = "$dependabotName" ];
+          then
+            echo "$dependabotName was detected as PR creator"
+            wget --quiet --method GET -O commits.json "${{ github.event.pull_request._links.commits.href }}"
+            committers=$( jq -r  '[.[] | .committer | .login] | unique' commits.json )
+            authors=$( jq -r  '[.[] | .author | .login] | unique' commits.json )
+            committersLength=$( jq '. | length' <<< "$committers" )
+            authorsLength=$( jq '. | length' <<< "$authors" )
+            echo "Committer count: $committersLength"
+            echo "Author count: $authorsLength"
+            if [ $committersLength -gt 1 ] || [ $authorsLength -gt 1 ];
+            then
+              echo 'There are too many committers and/or authors for a valid PR branch by $dependabotName'
+              exit 1
+            else
+              committer=$( jq -r '.[0]' <<< $committers )
+              author=$( jq -r '.[0]' <<< $authors )
+              echo "Committer: $committer"
+              echo "Author: $author"
+              if [ $committer != "$committerName" ] || [ $author != "$dependabotName" ];
+              then
+                echo 'Committer and/or author do not have a valid value'
+                exit 1
+              else
+                echo 'Committer and author are valid'
+                echo "skipVersionValidation=True" >> $GITHUB_ENV
+              fi
+            fi
+          else
+            echo "$dependabotName was not detected as PR creator"
+            echo "skipVersionValidation=False" >> $GITHUB_ENV
+          fi
       - name: Read PR package version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           cd ./pr/components
           prPackageVersion=$( jq -r '.version' package.json )
           echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
           echo "Current PR version: $prPackageVersion"
       - name: Read PR package-lock version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           cd ./pr/components
           prPackageLockVersion=$( jq -r '.version' package-lock.json )
           echo "prPackageLockVersion=$prPackageLockVersion" >> $GITHUB_ENV
           echo "Current PR lock version: $prPackageLockVersion"
       - name: Check PR package version
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           echo "PR lock version ${{ env.prPackageLockVersion }}"
           echo "PR version ${{ env.prPackageVersion }}"
@@ -48,6 +87,7 @@ jobs:
             exit 1
           fi
       - name: Check package version update
+        if: ${{ env.skipVersionValidation == 'False' }}
         run: |
           mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
           echo "Main package version: $mainPackageVersion"
