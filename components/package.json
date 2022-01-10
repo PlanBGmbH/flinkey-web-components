@@ -35,7 +35,7 @@
     "format:check": "prettier --config ./.prettierrc.json --check \"**{.ts,.json,.css,.scss,.html}\""
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1"
+    "@stencil/core": "2.12.1"
   },
   "license": "MIT",
   "keywords": [
