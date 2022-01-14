@@ -1,8 +1,6 @@
-# Changelog
+# [0.0.11] - 2022-01-10
 
-## [0.0.11] - 2022-01-10
-
-### Changed
+## Changed
 
 - Upgraded all project dependencies to their latest versions
 
