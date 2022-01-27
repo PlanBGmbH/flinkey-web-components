@@ -46,12 +46,15 @@
     "WITTE Digital"
   ],
   "devDependencies": {
+    "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^1.5.2",
     "@types/jest": "^27.4.0",
     "@types/puppeteer": "^5.4.4",
+    "autoprefixer": "^10.4.2",
     "jest": "^27.4.7",
     "jest-cli": "^27.4.7",
     "prettier": "^2.5.1",
-    "puppeteer": "^13.0.1"
+    "puppeteer": "^13.0.1",
+    "tailwindcss": "^3.0.17"
   }
 }
