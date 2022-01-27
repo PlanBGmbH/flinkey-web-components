@@ -24,7 +24,6 @@ export const config: Config = {
     },
   ],
   plugins: [
-    sass(),
     postcss({
       plugins: [tailwindcss(), autoprefixer],
     }),
