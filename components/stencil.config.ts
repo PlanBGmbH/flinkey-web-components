@@ -1,6 +1,10 @@
 import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
 
+import { postcss } from '@stencil/postcss';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
+
 export const config: Config = {
   namespace: 'flinkey-web-components',
   outputTargets: [
@@ -19,5 +23,9 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
   ],
-  plugins: [sass()],
+  plugins: [
+    postcss({
+      plugins: [tailwindcss(), autoprefixer],
+    }),
+  ],
 };
