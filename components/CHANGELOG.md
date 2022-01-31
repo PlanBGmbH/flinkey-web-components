@@ -1,7 +1,7 @@
-# [0.0.12] - 2022-01-27
+# 2022-01-31
 
 ## Changed
 
-- Add TailwindCSS to existing Stencil Project
+- Fix Tailwind integration with proper packages
 
-[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/54)
+[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/59)
