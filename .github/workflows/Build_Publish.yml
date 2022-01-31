@@ -122,6 +122,10 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Get current date
+        id: get_current_date
+        run: |
+          echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
       - name: Create GitHub release artifact
         run: |
           touch CHANGELOG.md
@@ -138,6 +142,6 @@ jobs:
         with:
           artifacts: ${{ env.zipName }}
           bodyFile: "CHANGELOG.md"
-          name: ${{ env.packageVersion }}
+          name: "[${{ env.packageVersion }}] - ${{ steps.get_current_date.outputs.current_date }}"
           tag: "v${{ env.packageVersion }}"
           token: ${{ secrets.GITHUB_TOKEN }}
