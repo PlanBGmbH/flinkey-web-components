@@ -1,7 +1,7 @@
-# 2022-01-31
+## Added
 
-## Changed
+- Added fetch API wrapper functions (`http<T>`, `httpGet<T>`, `httpPut<T>` and `httpDelete<T>`)
+- Added `Globals` class taking all necessary the flinkey API needs
+- Added `global.css` containing TailwindCSS definition
 
-- Fix Tailwind integration with proper packages
-
-[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/59)
+[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/66)
