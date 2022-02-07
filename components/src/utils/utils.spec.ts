@@ -2,14 +2,26 @@ import * as httpFn from './http';
 import { Globals, httpDelete, httpGet, httpPut, HttpResponse, setDefaultHeaders, setEndpoint } from './utils';
 
 describe('Utils', () => {
-  describe('when calling httpGet<T>(...), httpPut<T>(...) or httpDelete<T>(...) function', () => {
+  describe('when calling httpGet<T>(...) function', () => {
+    it('calls the http<T> function', async () => {
+      Globals.apiBaseUrl = 'https://some-base-url.com';
+      Globals.token = 'SomeSampleTokenValue';
+      const expectedHttpResponse: HttpResponse<unknown> = new Response(JSON.stringify({ foo: 'bar' }));
+      const httpSpy = jest.spyOn(httpFn, 'http').mockImplementationOnce(() => Promise.resolve(expectedHttpResponse));
+      const response = await httpGet<unknown>('api/endpoint');
+
+      expect(response).toEqual(expectedHttpResponse);
+      expect(httpSpy).toHaveBeenCalledWith(
+        new Request('https://some-base-url.com/api/endpoint', {
+          method: 'GET',
+          headers: setDefaultHeaders(),
+        }),
+      );
+    });
+  });
+
+  describe('when calling httpPut<T>(...) or httpDelete<T>(...) function', () => {
     for (const testCase of [
-      // TODO: fix test
-      /*{
-        httpFnCall: httpGet,
-        expectedMethod: 'GET',
-        withBody: false,
-      },*/
       {
         httpFnCall: httpPut,
         expectedMethod: 'PUT',
