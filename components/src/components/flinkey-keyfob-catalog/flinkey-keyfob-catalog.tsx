@@ -15,7 +15,7 @@ export class FlinkeyKeyfobCatalog {
   componentWillLoad() {
     return httpGet<string[]>('brands')
       .then((httpResponse: HttpResponse<string[]>) => {
-        this.brands = httpResponse.parsedBody!;
+        this.brands = httpResponse.parsedBody;
       })
       .catch(() => {
         // TODO
@@ -31,7 +31,7 @@ export class FlinkeyKeyfobCatalog {
     ]);
     return httpGet<Key[]>(path, searchParams)
       .then((httpResponse: HttpResponse<Key[]>) => {
-        this.keys = httpResponse.parsedBody!;
+        this.keys = httpResponse.parsedBody;
       })
       .catch(() => {
         // TODO
