@@ -28,8 +28,8 @@
     "start": "stencil build --dev --watch --serve",
     "test:unit": "stencil test --spec",
     "test:unit:watch": "stencil test --spec --watchAll",
-    "test:e2e": "stencil test --spec --e2e",
-    "test:e2e:watch": "stencil test --spec --e2e --watchAll",
+    "test:e2e": "stencil test --e2e",
+    "test:e2e:watch": "stencil test --e2e --watchAll",
     "generate": "stencil generate",
     "format:fix": "prettier --config ./.prettierrc.json --write \"**{.ts,.tsx,.json,.css,.scss,.html}\"",
     "format:check": "prettier --config ./.prettierrc.json --check \"**{.ts,.tsx,.json,.css,.scss,.html}\""
