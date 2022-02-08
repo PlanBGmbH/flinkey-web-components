@@ -26,7 +26,7 @@ export class FlinkeyKeyfobCatalog {
     const brand = (event.target as HTMLSelectElement).value;
     const path = `brands/${brand}/keys`;
     const searchParams = new URLSearchParams([
-      ['$select', 'id, boxName'],
+      ['$select', 'boxName'],
       ['$expand', 'keyForm($select=imageUrl)'],
     ]);
     return httpGet<Key[]>(path, searchParams)
