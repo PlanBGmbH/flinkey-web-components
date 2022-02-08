@@ -54,7 +54,7 @@ describe('when calling onBrandChanged(...)', () => {
     expect(httpGetSpy).toHaveBeenCalledWith(
       'brands/the-brand/keys',
       new URLSearchParams([
-        ['$select', 'id, boxName'],
+        ['$select', 'boxName'],
         ['$expand', 'keyForm($select=imageUrl)'],
       ]),
     );
