@@ -1,7 +1,19 @@
 ## Added
 
-- Added fetch API wrapper functions (`http<T>`, `httpGet<T>`, `httpPut<T>` and `httpDelete<T>`)
-- Added `Globals` class taking all necessary the flinkey API needs
-- Added `global.css` containing TailwindCSS definition
+- `flinkey-keyfob-catalog` web component (implementation, unit tests and e2e tests)
+- Installed `@tailwindcss/forms` package and added a config for it to `tailwind.config.js`
 
-[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/66)
+## Changed
+
+- Upgraded from `puppeteer@^13.0.1` to `puppeteer@^13.2.0`
+
+## Fixed
+
+- Added `flinkey-API-Key` to `setDefaultHeaders()`
+- Fixed unit test which is part of `utils.spec.ts`
+
+## Removed
+
+- Removed unused code from `stencil.config.ts`
+
+[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/20)

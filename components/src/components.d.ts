@@ -6,55 +6,29 @@
  */
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
-  interface MyComponent {
-    /**
-     * The first name
-     */
-    first: string;
-    /**
-     * The last name
-     */
-    last: string;
-    /**
-     * The middle name
-     */
-    middle: string;
-  }
+  interface FlinkeyKeyfobCatalog {}
 }
 declare global {
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLFlinkeyKeyfobCatalogElement extends Components.FlinkeyKeyfobCatalog, HTMLStencilElement {}
+  var HTMLFlinkeyKeyfobCatalogElement: {
+    prototype: HTMLFlinkeyKeyfobCatalogElement;
+    new (): HTMLFlinkeyKeyfobCatalogElement;
   };
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'flinkey-keyfob-catalog': HTMLFlinkeyKeyfobCatalogElement;
   }
 }
 declare namespace LocalJSX {
-  interface MyComponent {
-    /**
-     * The first name
-     */
-    first?: string;
-    /**
-     * The last name
-     */
-    last?: string;
-    /**
-     * The middle name
-     */
-    middle?: string;
-  }
+  interface FlinkeyKeyfobCatalog {}
   interface IntrinsicElements {
-    'my-component': MyComponent;
+    'flinkey-keyfob-catalog': FlinkeyKeyfobCatalog;
   }
 }
 export { LocalJSX as JSX };
 declare module '@stencil/core' {
   export namespace JSX {
     interface IntrinsicElements {
-      'my-component': LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+      'flinkey-keyfob-catalog': LocalJSX.FlinkeyKeyfobCatalog & JSXBase.HTMLAttributes<HTMLFlinkeyKeyfobCatalogElement>;
     }
   }
 }

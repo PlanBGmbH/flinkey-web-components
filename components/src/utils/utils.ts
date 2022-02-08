@@ -39,6 +39,7 @@ interface HttpResponse<T> extends Response {
 function setDefaultHeaders(): HeadersInit {
   return {
     'Authorization': `Bearer ${Globals.token}`,
+    'flinkey-API-Key': Globals.apiKey,
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   };
