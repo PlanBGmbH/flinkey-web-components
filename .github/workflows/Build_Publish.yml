@@ -122,10 +122,6 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Get current date
-        id: get_current_date
-        run: |
-          echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
       - name: Create GitHub release artifact
         run: |
           wget --quiet --method GET -O npmPackageData.json "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}"
@@ -140,6 +136,6 @@ jobs:
         with:
           artifacts: ${{ env.zipName }}
           body: ${{ env.changelog }}
-          name: "[${{ env.packageVersion }}] - ${{ steps.get_current_date.outputs.current_date }}"
+          name: ${{ env.packageVersion }}
           tag: "v${{ env.packageVersion }}"
           token: ${{ secrets.GITHUB_TOKEN }}
