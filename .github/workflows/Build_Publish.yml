@@ -128,8 +128,6 @@ jobs:
           echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
       - name: Create GitHub release artifact
         run: |
-          touch CHANGELOG.md
-          echo "${{ env.changelog }}" >> CHANGELOG.md
           wget --quiet --method GET -O npmPackageData.json "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}"
           tarballUrl=$( jq -r '.dist.tarball' npmPackageData.json )
           wget --quiet --method GET -O npmPackage.tgz "$tarballUrl"
@@ -141,7 +139,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: ${{ env.zipName }}
-          bodyFile: "CHANGELOG.md"
+          body: ${{ env.changelog }}
           name: "[${{ env.packageVersion }}] - ${{ steps.get_current_date.outputs.current_date }}"
           tag: "v${{ env.packageVersion }}"
           token: ${{ secrets.GITHUB_TOKEN }}
