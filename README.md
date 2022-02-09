@@ -17,7 +17,24 @@ This project provides some [Web Components](https://developer.mozilla.org/en-US/
 
 ## Getting started
 
-// TODO
+### Installation
+
+```shell
+npm install @planbgmbh/flinkey-web-components
+```
+
+### Usage example
+
+```ts
+Globals.customerId = 1;
+Globals.apiKey = 'SomeApiKey';
+Globals.token = 'ey123';
+Globals.apiBaseUrl = 'https://api.flinkey.de/v3';
+```
+
+```html
+<flinkey-keyfob-catalog></flinkey-keyfob-catalog>
+```
 
 ## Contributing
 
