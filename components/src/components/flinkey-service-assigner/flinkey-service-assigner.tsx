@@ -98,6 +98,12 @@ export class ProductServiceAdminTable {
     this.selectedProduct = productId;
   }
 
+  unlinkingModalHandler(productId: any, serviceId: any) {
+    this.unlinkingIsOpen = true;
+    this.selectedProduct = productId;
+    this.selectedService = serviceId;
+  }
+
   render() {
     return (
       <Host class="flex flex-col">
@@ -201,6 +207,7 @@ export class ProductServiceAdminTable {
                             {product.service !== undefined ? (
                               <button
                                 type="button"
+                                onClick={() => this.unlinkingModalHandler(product.product.id, product.service.id)}
                                 class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                               >
                                 Uninstall
