@@ -13,7 +13,7 @@
 
 ## Introduction
 
-This project provides some [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) built for usage in combination with the [flinkey API](https://developers.flinkey.com/api/v3/getting-started/). The reason to build these collection of [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) was that some functionality is provided via [flinkey API](https://developers.flinkey.com/api/v3/getting-started/) but there is no pre-built UI for some of these endpoints anywhere. Therefore each customer of WITTE Digital needs to build their own UI that consumes these specific endpoints.
+This project provides some [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) built for usage in combination with the [flinkey API](https://developers.flinkey.com/api/v3/getting-started/). The reason to build these collection of [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) was that some functionality is provided via [flinkey API](https://developers.flinkey.com/api/v3/getting-started/) only but there is no pre-built UI for that functionality anywhere. Therefore each customer of WITTE Digital needs to build their own UI that consumes these specific endpoints.
 
 ## Getting started
 
