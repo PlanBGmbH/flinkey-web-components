@@ -35,6 +35,19 @@ export class FlinkeyModal {
         console.log(err);
       });
   }
+
+  onUnlinkHandler(serviceId: number, productId: number) {
+    const body = { serviceId: `${serviceId}`, productId: `${productId}` };
+    httpDelete<string>('pairings', body)
+      .then((httpResponse: HttpResponse<string>) => {
+        console.log(httpResponse.parsedBody);
+        console.log('Successfully Unlinked');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <div class="fixed inset-0 font-sans" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -93,6 +106,7 @@ export class FlinkeyModal {
                   <button
                     type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-sky-300 text-base font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm"
+                    onClick={() => this.onUnlinkHandler(this.service, this.product)}
                   >
                     Unlink
                   </button>
