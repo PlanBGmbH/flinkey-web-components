@@ -12,6 +12,12 @@ export class ProductServiceAdminTable {
   @State() productsAndServices = [];
   @State() activeServices = [];
 
+  // Column state managment
+  @State() idIsOpen: boolean = true;
+  @State() uniqueIdIsOpen: boolean = true;
+  @State() sNumberIsOpen: boolean = true;
+  @State() sapIsOpen: boolean = true;
+  @State() actServicesIsOpen: boolean = true;
   fetchProducts = async () => {
     return httpGet<string[]>('products')
       .then((httpResponse: HttpResponse<string[]>) => {
@@ -64,29 +70,74 @@ export class ProductServiceAdminTable {
                   <tr>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        <div>ID</div>
+                        {this.idIsOpen && <div>ID</div>}
+                        <button onClick={() => (this.idIsOpen = !this.idIsOpen)}>
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </th>
 
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        <div>Unique ID</div>
+                        {this.uniqueIdIsOpen && <div>Unique ID</div>}
+                        <button onClick={() => (this.uniqueIdIsOpen = !this.uniqueIdIsOpen)}>
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </th>
 
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        <div>Serial Number</div>
+                        {this.sNumberIsOpen && <div> Serial Number</div>}
+                        <button onClick={() => (this.sNumberIsOpen = !this.sNumberIsOpen)}>
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        <div>Sap Number</div>
+                        {this.sapIsOpen && <div>Sap Number</div>}
+                        <button onClick={() => (this.sapIsOpen = !this.sapIsOpen)}>
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        <div>Active Services</div>
+                        {this.actServicesIsOpen && <div>Active Services</div>}
+                        <button onClick={() => (this.actServicesIsOpen = !this.actServicesIsOpen)}>
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
