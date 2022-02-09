@@ -14,6 +14,12 @@ export class ServiceDropdown {
 
   @State() selectedService: number = 0;
 
+  // Pass selected service to Modal
+  @Event() valueChanged: EventEmitter<any>;
+  onServiceSelectedHandler(item: { id: number }) {
+    this.valueChanged.emit(item.id);
+  }
+
   render() {
     return (
       <div class="relative inline-block text-left">
@@ -54,6 +60,7 @@ export class ServiceDropdown {
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-0"
+                      onClick={() => this.onServiceSelectedHandler(items)}
                     >
                       {items.id}
                     </a>
