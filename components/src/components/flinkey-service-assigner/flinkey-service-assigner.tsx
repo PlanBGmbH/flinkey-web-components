@@ -59,6 +59,17 @@ export class ProductServiceAdminTable {
     this.fetchProducts();
     this.fetchServices();
   }
+
+  @Watch('products')
+  watchStateHandler() {
+    if (this.products) {
+      console.log('Will -> fetchP2S');
+      this.products.forEach(element => {
+        this.fetchProductToService(element);
+      });
+    }
+  }
+
   render() {
     return (
       <Host class="flex flex-col">
