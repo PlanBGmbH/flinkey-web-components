@@ -13,11 +13,15 @@
 
 ## Introduction
 
-This project provides some Web Components built for usage in combination with the flinkey API.
+This project provides some [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) built for usage in combination with the [flinkey API](https://developers.flinkey.com/api/v3/getting-started/). The reason to build these collection of [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) was that some functionality is provided via [flinkey API](https://developers.flinkey.com/api/v3/getting-started/) but there is no pre-built UI for some of these endpoints anywhere. Therefore each customer of WITTE Digital needs to build their own UI that consumes these specific endpoints.
+
+## Getting started
+
+// TODO
 
 ## Contributing
 
-Please read through our [contributing guidelines](./.github/CONTRIBUTING.md).
+Please read through our [contributing guidelines](./CONTRIBUTING.md).
 
 ## Versioning
 
@@ -25,4 +29,4 @@ Maintained under the [Semantic Versioning guidelines](https://semver.org/).
 
 ## License
 
-[MIT](./.github/LICENSE) © [PlanB. GmbH](https://planb.net)
+[MIT](./LICENSE) (c) [PlanB. GmbH](https://planb.net)
