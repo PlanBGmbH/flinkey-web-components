@@ -93,6 +93,10 @@ export class ProductServiceAdminTable {
     this.unlinkingIsOpen = value.detail;
   }
 
+  // Modal - onPairing
+  @Listen('updateData')
+  updateDataHandler(value: any) {
+  }
   linkingModalHandler(productId: any) {
     this.linkingIsOpen = true;
     this.selectedProduct = productId;
