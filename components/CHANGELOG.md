@@ -1,5 +1,5 @@
-## Added
+## Changed
 
-- Added `engines` object with `node` and `npm` version definition to `package.json`
+- Extended `keywords` array of `package.json`
 
-[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/72)
+[Link to GitHub issue](https://github.com/PlanBGmbH/flinkey-web-components/issues/77)

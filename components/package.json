@@ -1,6 +1,6 @@
 {
   "name": "@planbgmbh/flinkey-web-components",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "This project provides some Web Components built for usage in combination with the flinkey API.",
   "author": "PlanB. GmbH",
   "repository": {
@@ -43,11 +43,19 @@
   },
   "license": "MIT",
   "keywords": [
+    "typescript",
     "stencil",
-    "webcomponents",
+    "rest-api",
+    "web-components",
+    "custom-elements",
+    "ui-components",
+    "jest-tests",
+    "tsx",
+    "puppeteer",
+    "tailwindcss",
     "flinkey",
-    "WITTE",
-    "WITTE Digital"
+    "witte-digital",
+    "flinkey-api"
   ],
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.1.3",
