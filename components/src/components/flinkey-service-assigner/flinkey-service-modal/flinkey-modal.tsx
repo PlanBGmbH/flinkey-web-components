@@ -15,6 +15,14 @@ export class FlinkeyModal {
   @Prop() service: number = 0;
   @Prop() unlinkedServices: any;
 
+  // Selected Service from Dropdown
+  @State() dropdownService: any;
+  // OnDropdown
+  @Listen('valueChanged')
+  valueChanged(value: any) {
+    this.dropdownService = value.detail;
+  }
+
   render() {
     return (
       <div class="fixed inset-0 font-sans" aria-labelledby="modal-title" role="dialog" aria-modal="true">
