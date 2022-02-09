@@ -1,4 +1,5 @@
 import { Component, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core';
+import { httpDelete, httpPut, HttpResponse } from '../../../utils/utils';
 
 @Component({
   tag: 'flinkey-modal',
@@ -23,6 +24,17 @@ export class FlinkeyModal {
     this.dropdownService = value.detail;
   }
 
+  onLinkHandler(serviceId: number, productId: number) {
+    const body = { serviceId: `${serviceId}`, productId: `${productId}` };
+    httpPut<string>('pairings', body)
+      .then((httpResponse: HttpResponse<string>) => {
+        console.log(httpResponse.parsedBody);
+        console.log('Successfully Linked');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   render() {
     return (
       <div class="fixed inset-0 font-sans" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -73,6 +85,7 @@ export class FlinkeyModal {
                   <button
                     type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-sky-300 text-base font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm"
+                    onClick={() => this.onLinkHandler(this.dropdownService, this.product)}
                   >
                     Link
                   </button>
