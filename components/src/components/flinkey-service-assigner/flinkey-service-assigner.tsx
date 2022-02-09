@@ -93,10 +93,26 @@ export class ProductServiceAdminTable {
     this.unlinkingIsOpen = value.detail;
   }
 
+  // Overwritte all previous data
+  updateDOM = () => {
+    this.services = [];
+    this.products = [];
+    this.productsAndServices = [];
+    this.activeServices = [];
+    this.fetchProducts();
+    this.fetchServices();
+  };
+
   // Modal - onPairing
   @Listen('updateData')
   updateDataHandler(value: any) {
+    if (value) {
+      this.updateDOM();
+    } else {
+      return;
+    }
   }
+
   linkingModalHandler(productId: any) {
     this.linkingIsOpen = true;
     this.selectedProduct = productId;
