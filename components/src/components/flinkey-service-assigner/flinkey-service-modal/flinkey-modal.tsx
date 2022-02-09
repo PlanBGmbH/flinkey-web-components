@@ -24,6 +24,11 @@ export class FlinkeyModal {
     this.closeModal.emit(false);
   }
 
+  @Event() updateData: EventEmitter<any>;
+  onPairingHandler() {
+    this.updateData.emit(true);
+  }
+
   // OnDropdown
   @Listen('valueChanged')
   valueChanged(value: any) {
@@ -41,6 +46,7 @@ export class FlinkeyModal {
         console.log(err);
       });
     this.onCloseHandler();
+    this.onPairingHandler();
   }
 
   onUnlinkHandler(serviceId: number, productId: number) {
@@ -54,6 +60,7 @@ export class FlinkeyModal {
         console.log(err);
       });
     this.onCloseHandler();
+    this.onPairingHandler();
   }
 
   render() {
