@@ -21,6 +21,13 @@ export class ProductServiceAdminTable {
   @State() sNumberIsOpen: boolean = true;
   @State() sapIsOpen: boolean = true;
   @State() actServicesIsOpen: boolean = true;
+
+  // Modal
+  @State() linkingIsOpen: boolean = false;
+  @State() unlinkingIsOpen: boolean = false;
+  @State() selectedProduct: any;
+  @State() selectedService: number;
+
   fetchProducts = async () => {
     return httpGet<string[]>('products')
       .then((httpResponse: HttpResponse<string[]>) => {
@@ -193,6 +200,23 @@ export class ProductServiceAdminTable {
                               >
                                 Link
                               </button>
+                            )}
+                            {this.linkingIsOpen && (
+                              <flinkey-modal
+                                modalTitle="Link a new Service to Product"
+                                body="Here, you can link your a Service to a product. Go ahead a choose a service to link."
+                                product={this.selectedProduct}
+                                unlinkedServices={this.unlinkedServices}
+                              />
+                            )}
+                            {this.unlinkingIsOpen && (
+                              <flinkey-modal
+                                modalTitle="Unlink Service from Product"
+                                body="Here, you can unlink your Service from a product. Go ahead a choose a service to link."
+                                product={this.selectedProduct}
+                                service={this.selectedService}
+                                unlinkedServices={this.unlinkedServices}
+                              />
                             )}
                           </td>
                         </tr>
