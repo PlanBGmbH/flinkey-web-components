@@ -18,6 +18,9 @@ export class ServiceDropdown {
   @Event() valueChanged: EventEmitter<any>;
   onServiceSelectedHandler(item: { id: number }) {
     this.valueChanged.emit(item.id);
+    this.selectedService = item.id;
+    this.dropDownValue = true;
+    this.dropdownIsOpen = false;
   }
 
   render() {
