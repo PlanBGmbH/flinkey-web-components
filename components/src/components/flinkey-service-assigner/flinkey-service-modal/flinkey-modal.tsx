@@ -18,6 +18,12 @@ export class FlinkeyModal {
 
   // Selected Service from Dropdown
   @State() dropdownService: any;
+
+  @Event() closeModal: EventEmitter<boolean>;
+  onCloseHandler() {
+    this.closeModal.emit(false);
+  }
+
   // OnDropdown
   @Listen('valueChanged')
   valueChanged(value: any) {
@@ -34,6 +40,7 @@ export class FlinkeyModal {
       .catch(err => {
         console.log(err);
       });
+    this.onCloseHandler();
   }
 
   onUnlinkHandler(serviceId: number, productId: number) {
@@ -46,6 +53,7 @@ export class FlinkeyModal {
       .catch(err => {
         console.log(err);
       });
+    this.onCloseHandler();
   }
 
   render() {
@@ -114,6 +122,7 @@ export class FlinkeyModal {
                 <button
                   type="button"
                   class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={() => this.onCloseHandler()}
                 >
                   Cancel
                 </button>

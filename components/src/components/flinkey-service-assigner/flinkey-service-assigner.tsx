@@ -86,6 +86,12 @@ export class ProductServiceAdminTable {
     this.unlinkedServices = this.services.filter(({ id: unlinkedId1 }) => !this.activeServices.some(({ id: inactiveId }) => inactiveId === unlinkedId1));
   }
 
+  // Modal - Close
+  @Listen('closeModal')
+  closeModal(value: any) {
+    this.linkingIsOpen = value.detail;
+    this.unlinkingIsOpen = value.detail;
+  }
   render() {
     return (
       <Host class="flex flex-col">
