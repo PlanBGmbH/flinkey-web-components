@@ -29,4 +29,4 @@ Maintained under the [Semantic Versioning guidelines](https://semver.org/).
 
 ## License
 
-[MIT](./LICENSE) (c) [PlanB. GmbH](https://planb.net)
+[License](./LICENSE)
