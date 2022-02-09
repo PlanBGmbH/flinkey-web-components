@@ -42,6 +42,7 @@ function setDefaultHeaders(): HeadersInit {
     'flinkey-API-Key': Globals.apiKey,
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+    'Customer-ID': '1',
   };
 }
 
