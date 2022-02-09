@@ -12,6 +12,9 @@ export class ProductServiceAdminTable {
   @State() productsAndServices = [];
   @State() activeServices = [];
 
+  // Services with no product assigned
+  @State() unlinkedServices: Array<any>;
+
   // Column state managment
   @State() idIsOpen: boolean = true;
   @State() uniqueIdIsOpen: boolean = true;
@@ -68,6 +71,12 @@ export class ProductServiceAdminTable {
         this.fetchProductToService(element);
       });
     }
+  }
+
+  // Check unlinked services
+  @Watch('activeServices')
+  activeServiceStateHandler() {
+    this.unlinkedServices = this.services.filter(({ id: unlinkedId1 }) => !this.activeServices.some(({ id: inactiveId }) => inactiveId === unlinkedId1));
   }
 
   render() {
