@@ -1,4 +1,5 @@
 import { Component, h, State, Watch, Listen, Host } from '@stencil/core';
+import Service from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
 
 @Component({
@@ -34,21 +35,18 @@ export class ProductServiceAdminTable {
       });
   }
 
-  fetchProductToService = async (productId: any) => {
-    const path = `products/${productId.id}/services`;
-    return httpGet<any>(path)
-      .then((httpResponse: HttpResponse<any>) => {
-        const service = httpResponse.parsedBody;
-        this.productsAndServices = [...this.productsAndServices, { service, product: productId }];
-        this.activeServices = [...this.activeServices, { id: service.id }];
+  fetchActiveServices(product) {
+    const path = `products/${product.id}/services`;
+    httpGet<Service>(path)
+      .then((httpResponse: HttpResponse<Service>) => {
+        this.activeServices = [...this.activeServices, httpResponse.parsedBody.id];
+        this.productsAndServices = [...this.productsAndServices, { product: product, service: httpResponse.parsedBody.id }];
       })
       .catch(() => {
-        this.productsAndServices = [...this.productsAndServices, { product: productId }];
-        if (this.activeServices.length === 0) {
-          this.activeServices = [];
-        }
+        this.productsAndServices = [...this.productsAndServices, { product: product }];
+        // TODO
       });
-  };
+  }
 
   componentWillLoad() {
     console.log('Will -> fetch');
@@ -60,15 +58,9 @@ export class ProductServiceAdminTable {
     if (this.products) {
       console.log('Will -> fetchP2S');
       this.products.forEach(element => {
-        this.fetchProductToService(element);
+        this.fetchActiveServices(element);
       });
     }
-  }
-
-  // Check unlinked services
-  @Watch('activeServices')
-  activeServiceStateHandler() {
-    this.unlinkedServices = this.services.filter(({ id: unlinkedId1 }) => !this.activeServices.some(({ id: inactiveId }) => inactiveId === unlinkedId1));
   }
 
   // Modal - Close
@@ -203,14 +195,14 @@ export class ProductServiceAdminTable {
                           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.sNumberIsVisible && `${product.product.serialNumber}`}</td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> {this.sapIsVisible && `${product.product.sapNumber}`}</td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {this.actServicesIsVisible && product.service !== undefined ? product.service.id : this.actServicesIsVisible && '-'}
+                            {this.actServicesIsVisible && product.service !== undefined ? product.service : this.actServicesIsVisible && '-'}
                           </td>
 
                           <td>
                             {product.service !== undefined ? (
                               <button
                                 type="button"
-                                onClick={() => this.unlinkingModalHandler(product.product.id, product.service.id)}
+                                onClick={() => this.unlinkingModalHandler(product.product.id, product.service)}
                                 class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                               >
                                 Uninstall
@@ -229,7 +221,7 @@ export class ProductServiceAdminTable {
                                 modalTitle="Link a new Service to Product"
                                 body="Here, you can link your a Service to a product. Go ahead a choose a service to link."
                                 product={this.selectedProduct}
-                                unlinkedServices={this.unlinkedServices}
+                                linkedServices={this.activeServices}
                               />
                             )}
                             {this.unlinkingIsVisible && (
@@ -238,7 +230,6 @@ export class ProductServiceAdminTable {
                                 body="Here, you can unlink your Service from a product. Go ahead a choose a service to link."
                                 product={this.selectedProduct}
                                 service={this.selectedService}
-                                unlinkedServices={this.unlinkedServices}
                               />
                             )}
                           </td>
