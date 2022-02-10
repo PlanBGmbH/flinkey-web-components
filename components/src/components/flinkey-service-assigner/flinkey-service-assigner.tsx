@@ -34,16 +34,6 @@ export class ProductServiceAdminTable {
       });
   }
 
-  fetchServices = async () => {
-    return httpGet<string[]>('services')
-      .then((httpResponse: HttpResponse<string[]>) => {
-        this.services = httpResponse.parsedBody;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   fetchProductToService = async (productId: any) => {
     const path = `products/${productId.id}/services`;
     return httpGet<any>(path)
@@ -63,7 +53,6 @@ export class ProductServiceAdminTable {
   componentWillLoad() {
     console.log('Will -> fetch');
     this.fetchProducts();
-    this.fetchServices();
   }
 
   @Watch('products')
@@ -90,13 +79,11 @@ export class ProductServiceAdminTable {
   }
 
   // Overwritte all previous data
-    this.services = [];
   updateDOM() {
     this.products = [];
     this.productsAndServices = [];
     this.activeServices = [];
     this.fetchProducts();
-    this.fetchServices();
   }
 
   // Modal - onPairing
