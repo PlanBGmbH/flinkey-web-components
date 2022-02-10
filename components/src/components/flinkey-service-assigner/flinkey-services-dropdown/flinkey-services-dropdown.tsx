@@ -6,7 +6,7 @@ import { Component, h, State, Prop, EventEmitter, Event } from '@stencil/core';
   shadow: true,
 })
 export class ServiceDropdown {
-  @Prop() unlinkedServices: any;
+  @Prop() linkedServices: any;
 
   // Dropdown state managment
   @State() dropdownIsOpen: boolean = false;

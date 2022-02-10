@@ -14,7 +14,7 @@ export class FlinkeyModal {
   // Inherited props
   @Prop() product: number;
   @Prop() service: number = 0;
-  @Prop() unlinkedServices: any;
+  @Prop() linkedServices: any;
 
   // Selected Service from Dropdown
   @State() dropdownService: any;
@@ -101,7 +101,7 @@ export class FlinkeyModal {
                   {this.product}
                 </button>
                 {this.service === 0 ? (
-                  <flinkey-services-dropdown unlinkedServices={this.unlinkedServices} />
+                  <flinkey-services-dropdown linkedServices={this.linkedServices} />
                 ) : (
                   <button class="mr-3 inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm">
                     {this.service}
