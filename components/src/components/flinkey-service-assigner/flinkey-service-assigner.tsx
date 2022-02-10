@@ -7,13 +7,9 @@ import { httpGet, HttpResponse } from '../../utils/utils';
   shadow: true,
 })
 export class ProductServiceAdminTable {
-  @State() services: Array<any>;
   @State() products: Array<any>;
   @State() productsAndServices = [];
   @State() activeServices = [];
-
-  // Services with no product assigned
-  @State() unlinkedServices: Array<any>;
 
   // Column state managment
   @State() idIsVisible: boolean = true;
@@ -28,7 +24,7 @@ export class ProductServiceAdminTable {
   @State() selectedProduct: any;
   @State() selectedService: number;
 
-  fetchProducts = async () => {
+  fetchProducts() {
     return httpGet<string[]>('products')
       .then((httpResponse: HttpResponse<string[]>) => {
         this.products = httpResponse.parsedBody;
@@ -36,7 +32,7 @@ export class ProductServiceAdminTable {
       .catch(err => {
         console.log(err);
       });
-  };
+  }
 
   fetchServices = async () => {
     return httpGet<string[]>('services')
@@ -94,14 +90,14 @@ export class ProductServiceAdminTable {
   }
 
   // Overwritte all previous data
-  updateDOM = () => {
     this.services = [];
+  updateDOM() {
     this.products = [];
     this.productsAndServices = [];
     this.activeServices = [];
     this.fetchProducts();
     this.fetchServices();
-  };
+  }
 
   // Modal - onPairing
   @Listen('updateData')
