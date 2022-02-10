@@ -16,15 +16,15 @@ export class ProductServiceAdminTable {
   @State() unlinkedServices: Array<any>;
 
   // Column state managment
-  @State() idIsOpen: boolean = true;
-  @State() uniqueIdIsOpen: boolean = true;
-  @State() sNumberIsOpen: boolean = true;
-  @State() sapIsOpen: boolean = true;
-  @State() actServicesIsOpen: boolean = true;
+  @State() idIsVisible: boolean = true;
+  @State() uniqueIdIsVisible: boolean = true;
+  @State() sNumberIsVisible: boolean = true;
+  @State() sapIsVisible: boolean = true;
+  @State() actServicesIsVisible: boolean = true;
 
   // Modal
-  @State() linkingIsOpen: boolean = false;
-  @State() unlinkingIsOpen: boolean = false;
+  @State() linkingIsVisible: boolean = false;
+  @State() unlinkingIsVisible: boolean = false;
   @State() selectedProduct: any;
   @State() selectedService: number;
 
@@ -89,8 +89,8 @@ export class ProductServiceAdminTable {
   // Modal - Close
   @Listen('closeModal')
   closeModal(value: any) {
-    this.linkingIsOpen = value.detail;
-    this.unlinkingIsOpen = value.detail;
+    this.linkingIsVisible = value.detail;
+    this.unlinkingIsVisible = value.detail;
   }
 
   // Overwritte all previous data
@@ -114,12 +114,12 @@ export class ProductServiceAdminTable {
   }
 
   linkingModalHandler(productId: any) {
-    this.linkingIsOpen = true;
+    this.linkingIsVisible = true;
     this.selectedProduct = productId;
   }
 
   unlinkingModalHandler(productId: any, serviceId: any) {
-    this.unlinkingIsOpen = true;
+    this.unlinkingIsVisible = true;
     this.selectedProduct = productId;
     this.selectedService = serviceId;
   }
@@ -135,8 +135,8 @@ export class ProductServiceAdminTable {
                   <tr>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        {this.idIsOpen && <div>ID</div>}
-                        <button onClick={() => (this.idIsOpen = !this.idIsOpen)}>
+                        {this.idIsVisible && <div>ID</div>}
+                        <button onClick={() => (this.idIsVisible = !this.idIsVisible)}>
                           <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path
                               fill-rule="evenodd"
@@ -150,8 +150,8 @@ export class ProductServiceAdminTable {
 
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        {this.uniqueIdIsOpen && <div>Unique ID</div>}
-                        <button onClick={() => (this.uniqueIdIsOpen = !this.uniqueIdIsOpen)}>
+                        {this.uniqueIdIsVisible && <div>Unique ID</div>}
+                        <button onClick={() => (this.uniqueIdIsVisible = !this.uniqueIdIsVisible)}>
                           <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path
                               fill-rule="evenodd"
@@ -165,8 +165,8 @@ export class ProductServiceAdminTable {
 
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        {this.sNumberIsOpen && <div> Serial Number</div>}
-                        <button onClick={() => (this.sNumberIsOpen = !this.sNumberIsOpen)}>
+                        {this.sNumberIsVisible && <div> Serial Number</div>}
+                        <button onClick={() => (this.sNumberIsVisible = !this.sNumberIsVisible)}>
                           <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path
                               fill-rule="evenodd"
@@ -179,8 +179,8 @@ export class ProductServiceAdminTable {
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        {this.sapIsOpen && <div>Sap Number</div>}
-                        <button onClick={() => (this.sapIsOpen = !this.sapIsOpen)}>
+                        {this.sapIsVisible && <div>Sap Number</div>}
+                        <button onClick={() => (this.sapIsVisible = !this.sapIsVisible)}>
                           <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path
                               fill-rule="evenodd"
@@ -193,8 +193,8 @@ export class ProductServiceAdminTable {
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div class="flex flex-row items-center justify-center">
-                        {this.actServicesIsOpen && <div>Active Services</div>}
-                        <button onClick={() => (this.actServicesIsOpen = !this.actServicesIsOpen)}>
+                        {this.actServicesIsVisible && <div>Active Services</div>}
+                        <button onClick={() => (this.actServicesIsVisible = !this.actServicesIsVisible)}>
                           <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path
                               fill-rule="evenodd"
@@ -215,12 +215,12 @@ export class ProductServiceAdminTable {
                     this.productsAndServices.map(product => {
                       return (
                         <tr class="text-center">
-                          <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.idIsOpen && `${product.product.id}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.uniqueIdIsOpen && `${product.product.uniqueId}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.sNumberIsOpen && `${product.product.serialNumber}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> {this.sapIsOpen && `${product.product.sapNumber}`}</td>
+                          <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.idIsVisible && `${product.product.id}`}</td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.uniqueIdIsVisible && `${product.product.uniqueId}`}</td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.sNumberIsVisible && `${product.product.serialNumber}`}</td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> {this.sapIsVisible && `${product.product.sapNumber}`}</td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {this.actServicesIsOpen && product.service !== undefined ? product.service.id : this.actServicesIsOpen && '-'}
+                            {this.actServicesIsVisible && product.service !== undefined ? product.service.id : this.actServicesIsVisible && '-'}
                           </td>
 
                           <td>
@@ -241,7 +241,7 @@ export class ProductServiceAdminTable {
                                 Link
                               </button>
                             )}
-                            {this.linkingIsOpen && (
+                            {this.linkingIsVisible && (
                               <flinkey-modal
                                 modalTitle="Link a new Service to Product"
                                 body="Here, you can link your a Service to a product. Go ahead a choose a service to link."
@@ -249,7 +249,7 @@ export class ProductServiceAdminTable {
                                 unlinkedServices={this.unlinkedServices}
                               />
                             )}
-                            {this.unlinkingIsOpen && (
+                            {this.unlinkingIsVisible && (
                               <flinkey-modal
                                 modalTitle="Unlink Service from Product"
                                 body="Here, you can unlink your Service from a product. Go ahead a choose a service to link."
