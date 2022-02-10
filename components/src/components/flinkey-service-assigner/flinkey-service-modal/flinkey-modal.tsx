@@ -39,8 +39,9 @@ export class FlinkeyModal {
     const body = { serviceId: `${serviceId}`, productId: `${productId}` };
     httpPut<string>('pairings', body)
       .then((httpResponse: HttpResponse<string>) => {
-        console.log(httpResponse.parsedBody);
-        console.log('Successfully Linked');
+        if (httpResponse.parsedBody === undefined) {
+          console.log('Service Successfully Linked');
+        }
       })
       .catch(err => {
         console.log(err);
@@ -53,8 +54,9 @@ export class FlinkeyModal {
     const body = { serviceId: `${serviceId}`, productId: `${productId}` };
     httpDelete<string>('pairings', body)
       .then((httpResponse: HttpResponse<string>) => {
-        console.log(httpResponse.parsedBody);
-        console.log('Successfully Unlinked');
+        if (httpResponse.parsedBody === undefined) {
+          console.log('Service Successfully Unlinked');
+        }
       })
       .catch(err => {
         console.log(err);
