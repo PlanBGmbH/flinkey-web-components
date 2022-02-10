@@ -1,4 +1,6 @@
 import { Component, h, State, Prop, EventEmitter, Event } from '@stencil/core';
+import { httpGet, HttpResponse } from '../../../utils/utils';
+import Service from '../flinkey-service-assigner.interfaces';
 
 @Component({
   tag: 'flinkey-services-dropdown',
@@ -7,6 +9,8 @@ import { Component, h, State, Prop, EventEmitter, Event } from '@stencil/core';
 })
 export class ServiceDropdown {
   @Prop() linkedServices: any;
+
+  @State() unlinkedServices: any = [];
 
   // Dropdown state managment
   @State() dropdownIsOpen: boolean = false;
@@ -21,6 +25,21 @@ export class ServiceDropdown {
     this.selectedService = item.id;
     this.dropDownValue = true;
     this.dropdownIsOpen = false;
+  }
+
+  fetchUnactiveServices() {
+    const searchParams = new URLSearchParams(`$filter=id in (${this.linkedServices}) eq false`);
+    return httpGet<Service[]>('services', searchParams)
+      .then((httpResponse: HttpResponse<Service[]>) => {
+        this.unlinkedServices = httpResponse.parsedBody;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  componentWillLoad() {
+    this.fetchUnactiveServices();
   }
 
   render() {
