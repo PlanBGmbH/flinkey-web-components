@@ -175,7 +175,7 @@ export class ProductServiceAdminTable {
                             {this.linkingIsVisible && (
                               <flinkey-modal
                                 modalTitle="Link a new Service to Product"
-                                body="Here, you can link your a Service to a product. Go ahead a choose a service to link."
+                                body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
                                 product={this.selectedProduct}
                                 linkedServices={this.activeServices}
                               />
@@ -183,7 +183,7 @@ export class ProductServiceAdminTable {
                             {this.unlinkingIsVisible && (
                               <flinkey-modal
                                 modalTitle="Unlink Service from Product"
-                                body="Here, you can unlink your Service from a product. Go ahead a choose a service to link."
+                                body="Unlink a Service from a Product by pressing Unlink."
                                 product={this.selectedProduct}
                                 service={this.selectedService}
                               />
