@@ -1,4 +1,4 @@
-import { Component, h, State, Watch, Listen, Host } from '@stencil/core';
+import { Component, h, State, Watch, Listen, Host, Prop } from '@stencil/core';
 import Service from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
 
@@ -12,12 +12,11 @@ export class ProductServiceAdminTable {
   @State() productsAndServices = [];
   @State() activeServices = [];
 
-  // Column state managment
-  @State() idIsVisible: boolean = true;
-  @State() uniqueIdIsVisible: boolean = true;
-  @State() sNumberIsVisible: boolean = true;
-  @State() sapIsVisible: boolean = true;
-  @State() actServicesIsVisible: boolean = true;
+  @Prop() idIsVisible: boolean = true;
+  @Prop() uniqueIdIsVisible: boolean = true;
+  @Prop() sNumberIsVisible: boolean = true;
+  @Prop() sapIsVisible: boolean = true;
+  @Prop() actServicesIsVisible: boolean = true;
 
   // Modal
   @State() linkingIsVisible: boolean = false;
@@ -108,78 +107,33 @@ export class ProductServiceAdminTable {
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div class="flex flex-row items-center justify-center">
-                        {this.idIsVisible && <div>ID</div>}
-                        <button onClick={() => (this.idIsVisible = !this.idIsVisible)}>
-                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </th>
+                    {this.idIsVisible && (
+                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div>ID</div>
+                      </th>
+                    )}
 
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div class="flex flex-row items-center justify-center">
-                        {this.uniqueIdIsVisible && <div>Unique ID</div>}
-                        <button onClick={() => (this.uniqueIdIsVisible = !this.uniqueIdIsVisible)}>
-                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </th>
+                    {this.uniqueIdIsVisible && (
+                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div>Unique ID</div>
+                      </th>
+                    )}
 
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div class="flex flex-row items-center justify-center">
-                        {this.sNumberIsVisible && <div> Serial Number</div>}
-                        <button onClick={() => (this.sNumberIsVisible = !this.sNumberIsVisible)}>
-                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div class="flex flex-row items-center justify-center">
-                        {this.sapIsVisible && <div>Sap Number</div>}
-                        <button onClick={() => (this.sapIsVisible = !this.sapIsVisible)}>
-                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div class="flex flex-row items-center justify-center">
-                        {this.actServicesIsVisible && <div>Active Services</div>}
-                        <button onClick={() => (this.actServicesIsVisible = !this.actServicesIsVisible)}>
-                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </th>
+                    {this.sNumberIsVisible && (
+                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div> Serial Number</div>
+                      </th>
+                    )}
+                    {this.sapIsVisible && (
+                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div>Sap Number</div>
+                      </th>
+                    )}
+                    {this.actServicesIsVisible && (
+                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div>Active Services</div>
+                      </th>
+                    )}
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Functionen
                     </th>
@@ -190,13 +144,15 @@ export class ProductServiceAdminTable {
                     this.productsAndServices.map(product => {
                       return (
                         <tr class="text-center">
-                          <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.idIsVisible && `${product.product.id}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.uniqueIdIsVisible && `${product.product.uniqueId}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{this.sNumberIsVisible && `${product.product.serialNumber}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> {this.sapIsVisible && `${product.product.sapNumber}`}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {this.actServicesIsVisible && product.service !== undefined ? product.service : this.actServicesIsVisible && '-'}
-                          </td>
+                          {this.idIsVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product.product.id}</td>}
+                          {this.uniqueIdIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.uniqueId}</td>}
+                          {this.sNumberIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.serialNumber}</td>}
+                          {this.sapIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.sapNumber}</td>}
+                          {this.actServicesIsVisible && (
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {product.service !== undefined ? product.service : this.actServicesIsVisible && '-'}
+                            </td>
+                          )}
 
                           <td>
                             {product.service !== undefined ? (
