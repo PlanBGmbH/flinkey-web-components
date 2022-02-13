@@ -1,6 +1,6 @@
 import { Component, h, State, Prop, EventEmitter, Event } from '@stencil/core';
 import { httpGet, HttpResponse } from '../../../utils/utils';
-import Service from '../flinkey-service-assigner.interfaces';
+import { Service } from '../flinkey-service-assigner.interfaces';
 
 @Component({
   tag: 'flinkey-services-dropdown',

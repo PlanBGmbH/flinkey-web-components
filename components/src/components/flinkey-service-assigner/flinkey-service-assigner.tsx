@@ -1,5 +1,5 @@
-import { Component, h, State, Watch, Listen, Host, Prop } from '@stencil/core';
-import Service from './flinkey-service-assigner.interfaces';
+import { Component, h, State, Listen, Host, Prop } from '@stencil/core';
+import {Column, Product, Service} from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
 
 @Component({
@@ -8,58 +8,68 @@ import { httpGet, HttpResponse } from '../../utils/utils';
   shadow: true,
 })
 export class ProductServiceAdminTable {
-  @State() products: Array<any>;
-  @State() productsAndServices = [];
-  @State() activeServices = [];
+  @State() products: Product[] = [];
 
-  @Prop() idIsVisible: boolean = true;
-  @Prop() uniqueIdIsVisible: boolean = true;
-  @Prop() sNumberIsVisible: boolean = true;
-  @Prop() sapIsVisible: boolean = true;
-  @Prop() actServicesIsVisible: boolean = true;
+  @Prop() isIdVisible: boolean = true;
+  @Prop() isUniqueIdVisible: boolean = true;
+  @Prop() isSerialNumberVisible: boolean = true;
+  @Prop() isSapNumberVisible: boolean = true;
 
   // Modal
   @State() linkingIsVisible: boolean = false;
   @State() unlinkingIsVisible: boolean = false;
-  @State() selectedProduct: any;
-  @State() selectedService: number;
+  @State() selectedProductId: number;
+  @State() selectedServiceId: number;
 
-  fetchProducts() {
-    return httpGet<string[]>('products')
-      .then((httpResponse: HttpResponse<string[]>) => {
-        this.products = httpResponse.parsedBody;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  componentWillLoad() {
+    return this.fetchProducts();
   }
 
-  fetchActiveServices(product) {
-    const path = `products/${product.id}/services`;
-    httpGet<Service>(path)
-      .then((httpResponse: HttpResponse<Service>) => {
-        this.activeServices = [...this.activeServices, httpResponse.parsedBody.id];
-        this.productsAndServices = [...this.productsAndServices, { product: product, service: httpResponse.parsedBody.id }];
+  buildProductSelectFilter() {
+    const columns: Column[] = [
+      {name: 'id', visible: this.isIdVisible},
+      {name: 'uniqueId', visible: this.isUniqueIdVisible},
+      {name: 'serialNumber', visible: this.isSerialNumberVisible},
+      {name: 'sapNumber', visible: this.isSapNumberVisible},
+    ];
+    const visibleColumns: string[] = columns.filter((column: Column) => column.visible).map((column: Column) => column.name);
+    const selectFilter = visibleColumns.join(', ');
+    return selectFilter;
+  }
+
+  fetchProducts() {
+    const searchParams = new URLSearchParams([
+      ['$select', this.buildProductSelectFilter()],
+    ]);
+    return httpGet<Product[]>('products', searchParams)
+      .then((httpResponse: HttpResponse<Product[]>) => {
+        for (const product of httpResponse.parsedBody) {
+          this.products.push(product);
+        }
+      }).then(() => {
+        const fetchServiceCalls: Promise<void>[] = [];
+        for (const product of this.products) {
+          fetchServiceCalls.push(this.fetchActiveService(product));
+        }
+        return Promise.all(fetchServiceCalls);
       })
       .catch(() => {
-        this.productsAndServices = [...this.productsAndServices, { product: product }];
         // TODO
       });
   }
 
-  componentWillLoad() {
-    console.log('Will -> fetch');
-    this.fetchProducts();
-  }
-
-  @Watch('products')
-  watchStateHandler() {
-    if (this.products) {
-      console.log('Will -> fetchP2S');
-      this.products.forEach(element => {
-        this.fetchActiveServices(element);
+  fetchActiveService(product: Product) {
+    const path = `products/${product.id}/services`;
+    const searchParams = new URLSearchParams([
+      ['$select', 'id'],
+    ]);
+    return httpGet<Service>(path, searchParams)
+      .then((httpResponse: HttpResponse<Service>) => {
+        this.products = [...this.products, { ...product, service: httpResponse.parsedBody }];
+      })
+      .catch(() => {
+        // TODO
       });
-    }
   }
 
   // Modal - Close
@@ -69,33 +79,25 @@ export class ProductServiceAdminTable {
     this.unlinkingIsVisible = value.detail;
   }
 
-  // Overwritte all previous data
-  updateDOM() {
-    this.products = [];
-    this.productsAndServices = [];
-    this.activeServices = [];
-    this.fetchProducts();
-  }
-
   // Modal - onPairing
   @Listen('updateData')
   updateDataHandler(value: any) {
     if (value) {
-      this.updateDOM();
+      return this.fetchProducts();
     } else {
       return;
     }
   }
 
-  linkingModalHandler(productId: any) {
+  linkingModalHandler(productId: number) {
     this.linkingIsVisible = true;
-    this.selectedProduct = productId;
+    this.selectedProductId = productId;
   }
 
-  unlinkingModalHandler(productId: any, serviceId: any) {
+  unlinkingModalHandler(productId: number, serviceId: number) {
     this.unlinkingIsVisible = true;
-    this.selectedProduct = productId;
-    this.selectedService = serviceId;
+    this.selectedProductId = productId;
+    this.selectedServiceId = serviceId;
   }
 
   render() {
@@ -107,58 +109,52 @@ export class ProductServiceAdminTable {
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    {this.idIsVisible && (
+                    {this.isIdVisible && (
                       <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         <div>ID</div>
                       </th>
                     )}
 
-                    {this.uniqueIdIsVisible && (
+                    {this.isUniqueIdVisible && (
                       <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         <div>Unique ID</div>
                       </th>
                     )}
 
-                    {this.sNumberIsVisible && (
+                    {this.isSerialNumberVisible && (
                       <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div> Serial Number</div>
+                        <div>Serial Number</div>
                       </th>
                     )}
-                    {this.sapIsVisible && (
+                    {this.isSapNumberVisible && (
                       <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>Sap Number</div>
-                      </th>
-                    )}
-                    {this.actServicesIsVisible && (
-                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>Active Services</div>
+                        <div>SAP Number</div>
                       </th>
                     )}
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Functionen
+                      <div>Active Service</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  {this.productsAndServices &&
-                    this.productsAndServices.map(product => {
+                  {this.products?.map(product => {
                       return (
                         <tr class="text-center">
-                          {this.idIsVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product.product.id}</td>}
-                          {this.uniqueIdIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.uniqueId}</td>}
-                          {this.sNumberIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.serialNumber}</td>}
-                          {this.sapIsVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.product.sapNumber}</td>}
-                          {this.actServicesIsVisible && (
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {product.service !== undefined ? product.service : this.actServicesIsVisible && '-'}
-                            </td>
-                          )}
-
+                          {this.isIdVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product.id}</td>}
+                          {this.isUniqueIdVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.uniqueId}</td>}
+                          {this.isSerialNumberVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.serialNumber}</td>}
+                          {this.isSapNumberVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.sapNumber}</td>}
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {product.service?.id ?? '-'}
+                          </td>
                           <td>
-                            {product.service !== undefined ? (
+                            {product.service ? (
                               <button
                                 type="button"
-                                onClick={() => this.unlinkingModalHandler(product.product.id, product.service)}
+                                onClick={() => this.unlinkingModalHandler(product.id, product.service.id)}
                                 class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                               >
                                 Uninstall
@@ -166,7 +162,7 @@ export class ProductServiceAdminTable {
                             ) : (
                               <button
                                 type="button"
-                                onClick={() => this.linkingModalHandler(product.product.id)}
+                                onClick={() => this.linkingModalHandler(product.id)}
                                 class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                               >
                                 Link
@@ -176,7 +172,7 @@ export class ProductServiceAdminTable {
                               <flinkey-modal
                                 modalTitle="Link a new Service to Product"
                                 body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
-                                product={this.selectedProduct}
+                                product={this.selectedProductId}
                                 linkedServices={this.activeServices}
                               />
                             )}
@@ -184,8 +180,8 @@ export class ProductServiceAdminTable {
                               <flinkey-modal
                                 modalTitle="Unlink Service from Product"
                                 body="Unlink a Service from a Product by pressing Unlink."
-                                product={this.selectedProduct}
-                                service={this.selectedService}
+                                product={this.selectedProductId}
+                                service={this.selectedServiceId}
                               />
                             )}
                           </td>
