@@ -27,13 +27,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Check commit authors
+        shell: bash
         env:
           USER_NAME: "${{ github.event.pull_request.user.login }}"
           LINK: "${{ github.event.pull_request._links.commits.href }}"
         run: |
           ls -la ${GITHUB_WORKSPACE}
-          chmod +x "./.github/workflows/scripts/authorValidation.sh"
-          "./.github/workflows/scripts/authorValidation.sh"
+          # TODO: change later to /main/
+          chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/authorValidation.sh"
+          "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/authorValidation.sh"
 
       - name: Read PR package version
         if: ${{ env.skipVersionValidation == 'False' }}
