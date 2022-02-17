@@ -4,6 +4,10 @@
 dependabotName="dependabot[bot]"
 committerName="web-flow"
 
+# debug
+echo "user name $USER_NAME"
+echo "link $LINK"
+
 if [ $USER_NAME = "$dependabotName" ];
 then
     echo "$dependabotName was detected as PR creator"
@@ -48,3 +52,6 @@ else
     echo "$dependabotName was not detected as PR creator"
     echo "skipVersionValidation=False" >> $GITHUB_ENV
 fi
+
+# debug
+ echo "myName=Julius" >> $GITHUB_ENV
