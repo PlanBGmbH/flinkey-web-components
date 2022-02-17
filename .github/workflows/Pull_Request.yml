@@ -31,8 +31,8 @@ jobs:
           USER_NAME: "${{ github.event.pull_request.user.login }}"
           LINK: "${{ github.event.pull_request._links.commits.href }}"
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/.github/scripts/authorValidation.sh"
-          "${GITHUB_WORKSPACE}/.github/scripts/authorValidation.sh"
+          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/scripts/authorValidation.sh"
+          "${GITHUB_WORKSPACE}/.github/workflows/scripts/authorValidation.sh"
 
       - name: Read PR package version
         if: ${{ env.skipVersionValidation == 'False' }}
