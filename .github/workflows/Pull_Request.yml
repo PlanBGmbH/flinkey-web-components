@@ -36,11 +36,6 @@ jobs:
           chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/authorValidation.sh"
           "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/authorValidation.sh"
 
-      - name: test github env
-        shell: bash
-        run: |
-          echo ${{ env.myName }}
-
       - name: Read PR package version
         if: ${{ env.skipVersionValidation == 'False' }}
         run: |
