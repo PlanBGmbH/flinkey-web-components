@@ -35,75 +35,30 @@ jobs:
           chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/author_validation.sh"
           "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/author_validation.sh"
 
-      - name: Read PR package version
+      - name: Read PR versions
         if: ${{ env.skipVersionValidation == 'False' }}
+        shell: bash
         run: |
-          cd ./pr/components
-          prPackageVersion=$( jq -r '.version' package.json )
-          echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
-          echo "Current PR version: $prPackageVersion"
-
-      - name: Read PR package-lock version
-        if: ${{ env.skipVersionValidation == 'False' }}
-        run: |
-          cd ./pr/components
-          prPackageLockVersion=$( jq -r '.version' package-lock.json )
-          echo "prPackageLockVersion=$prPackageLockVersion" >> $GITHUB_ENV
-          echo "Current PR lock version: $prPackageLockVersion"
+          cd "${GITHUB_WORKSPACE}/pr/"
+          chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/read_versions.sh"
+          "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/read_versions.sh"
 
       - name: Check PR package version
         if: ${{ env.skipVersionValidation == 'False' }}
+        env:
+          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
+          PACKAGE_LOCK_VERSION: ${{ env.PACKAGE_LOCK_VERSION }}
         run: |
-          echo "PR lock version ${{ env.prPackageLockVersion }}"
-          echo "PR version ${{ env.prPackageVersion }}"
-          if $(dpkg --compare-versions ${{ env.prPackageVersion }} eq ${{ env.prPackageLockVersion }});
-          then
-            echo 'PR package lock version and PR package version are equal'
-          else
-            echo 'PR package lock version and PR package version are not equal'
-            exit 1
-          fi
+          chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/validate_versions.sh"
+          "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/validate_versions.sh"
 
       - name: Check package version update
         if: ${{ env.skipVersionValidation == 'False' }}
+        env:
+          PR_PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
         run: |
-          mainPackageVersion=$( jq -r '.version' ./main/components/package.json )
-          echo "Main package version: $mainPackageVersion"
-          echo "Reset version of package.json and package-lock.json for diff"
-          echo "$( jq '.version = "null"' ./pr/components/package.json )" > ./pr/components/package.json
-          echo "$( jq '.version = "null"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
-          echo "$( jq '.version = "null"' ./main/components/package.json )" > ./main/components/package.json
-          echo "$( jq '.version = "null"' ./main/components/package-lock.json )" > ./main/components/package-lock.json
-          echo "Calculate diff between main and PR branch"
-          diff -qr pr/components main/components && changes=0 || changes=1
-          echo "Re-assign version of package.json and package-lock.json"
-          echo "$( jq '.version = "${{ env.prPackageVersion }}"' ./pr/components/package.json )" > ./pr/components/package.json
-          echo "$( jq '.version = "${{ env.prPackageLockVersion }}"' ./pr/components/package-lock.json )" > ./pr/components/package-lock.json
-          echo "Update prPackageVersion environment variable"
-          prPackageVersion=$( jq -r '.version' ./pr/components/package.json )
-          echo "prPackageVersion=$prPackageVersion" >> $GITHUB_ENV
-          if [ $changes -eq 1 ];
-          then
-            echo 'components directory content changed'
-            echo "PR package version: ${{ env.prPackageVersion }}"
-            echo "Main package version: $mainPackageVersion"
-            if $(dpkg --compare-versions ${{ env.prPackageVersion }} gt $mainPackageVersion);
-            then
-              echo 'Version updated'
-            else
-              echo 'Version did not update'
-              exit 1
-            fi
-          else
-            echo 'components directory content did not change'
-            if $(dpkg --compare-versions ${{ env.prPackageVersion }} ne $mainPackageVersion);
-            then
-              echo 'Version changed but should not'
-              exit 1
-            else
-              echo 'Version did not change'
-            fi
-          fi
+          chmod +x "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/pr_check_version_update.sh"
+          "${GITHUB_WORKSPACE}/pr/.github/workflows/scripts/pr_check_version_update.sh"
 
       - name: Install dependencies
         run: |
