@@ -12,7 +12,8 @@ interface Product {
 
 interface Column {
   name: string;
-  visible: boolean;
+  label: string;
+  isVisible: () => boolean;
 }
 
 export { Service, Product, Column };

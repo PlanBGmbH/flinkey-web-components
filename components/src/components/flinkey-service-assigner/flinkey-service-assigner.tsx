@@ -1,5 +1,5 @@
 import { Component, h, State, Listen, Host, Prop } from '@stencil/core';
-import {Column, Product, Service} from './flinkey-service-assigner.interfaces';
+import { Column, Product, Service } from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
 
 @Component({
@@ -8,12 +8,18 @@ import { httpGet, HttpResponse } from '../../utils/utils';
   shadow: true,
 })
 export class ProductServiceAdminTable {
-  @State() products: Product[] = [];
-
   @Prop() isIdVisible: boolean = true;
   @Prop() isUniqueIdVisible: boolean = true;
   @Prop() isSerialNumberVisible: boolean = true;
   @Prop() isSapNumberVisible: boolean = true;
+
+  @State() products: Product[] = [];
+  @State() columns: Column[] = [
+    { name: 'id', label: 'ID', isVisible: () => this.isIdVisible },
+    { name: 'uniqueId', label: 'Unique ID', isVisible: () => this.isUniqueIdVisible },
+    { name: 'serialNumber', label: 'Serial Number', isVisible: () => this.isSerialNumberVisible },
+    { name: 'sapNumber', label: 'SAP Number', isVisible: () => this.isSapNumberVisible },
+  ];
 
   // Modal
   @State() linkingIsVisible: boolean = false;
@@ -26,27 +32,20 @@ export class ProductServiceAdminTable {
   }
 
   buildProductSelectFilter() {
-    const columns: Column[] = [
-      {name: 'id', visible: this.isIdVisible},
-      {name: 'uniqueId', visible: this.isUniqueIdVisible},
-      {name: 'serialNumber', visible: this.isSerialNumberVisible},
-      {name: 'sapNumber', visible: this.isSapNumberVisible},
-    ];
-    const visibleColumns: string[] = columns.filter((column: Column) => column.visible).map((column: Column) => column.name);
+    const visibleColumns: string[] = this.columns.filter((column: Column) => column.isVisible).map((column: Column) => column.name);
     const selectFilter = visibleColumns.join(', ');
     return selectFilter;
   }
 
   fetchProducts() {
-    const searchParams = new URLSearchParams([
-      ['$select', this.buildProductSelectFilter()],
-    ]);
+    const searchParams = new URLSearchParams([['$select', this.buildProductSelectFilter()]]);
     return httpGet<Product[]>('products', searchParams)
       .then((httpResponse: HttpResponse<Product[]>) => {
         for (const product of httpResponse.parsedBody) {
           this.products.push(product);
         }
-      }).then(() => {
+      })
+      .then(() => {
         const fetchServiceCalls: Promise<void>[] = [];
         for (const product of this.products) {
           fetchServiceCalls.push(this.fetchActiveService(product));
@@ -60,9 +59,7 @@ export class ProductServiceAdminTable {
 
   fetchActiveService(product: Product) {
     const path = `products/${product.id}/services`;
-    const searchParams = new URLSearchParams([
-      ['$select', 'id'],
-    ]);
+    const searchParams = new URLSearchParams([['$select', 'id']]);
     return httpGet<Service>(path, searchParams)
       .then((httpResponse: HttpResponse<Service>) => {
         this.products = [...this.products, { ...product, service: httpResponse.parsedBody }];
@@ -109,27 +106,13 @@ export class ProductServiceAdminTable {
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    {this.isIdVisible && (
-                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>ID</div>
-                      </th>
-                    )}
-
-                    {this.isUniqueIdVisible && (
-                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>Unique ID</div>
-                      </th>
-                    )}
-
-                    {this.isSerialNumberVisible && (
-                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>Serial Number</div>
-                      </th>
-                    )}
-                    {this.isSapNumberVisible && (
-                      <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <div>SAP Number</div>
-                      </th>
+                    {this.columns.map(
+                      column =>
+                        column.isVisible && (
+                          <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <div>{column.label}</div>
+                          </th>
+                        ),
                     )}
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       <div>Active Service</div>
@@ -141,53 +124,48 @@ export class ProductServiceAdminTable {
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                   {this.products?.map(product => {
-                      return (
-                        <tr class="text-center">
-                          {this.isIdVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product.id}</td>}
-                          {this.isUniqueIdVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.uniqueId}</td>}
-                          {this.isSerialNumberVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.serialNumber}</td>}
-                          {this.isSapNumberVisible && <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.sapNumber}</td>}
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {product.service?.id ?? '-'}
-                          </td>
-                          <td>
-                            {product.service ? (
-                              <button
-                                type="button"
-                                onClick={() => this.unlinkingModalHandler(product.id, product.service.id)}
-                                class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                              >
-                                Uninstall
-                              </button>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() => this.linkingModalHandler(product.id)}
-                                class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                              >
-                                Link
-                              </button>
-                            )}
-                            {this.linkingIsVisible && (
-                              <flinkey-modal
-                                modalTitle="Link a new Service to Product"
-                                body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
-                                product={this.selectedProductId}
-                                linkedServices={this.activeServices}
-                              />
-                            )}
-                            {this.unlinkingIsVisible && (
-                              <flinkey-modal
-                                modalTitle="Unlink Service from Product"
-                                body="Unlink a Service from a Product by pressing Unlink."
-                                product={this.selectedProductId}
-                                service={this.selectedServiceId}
-                              />
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    return (
+                      <tr class="text-center">
+                        {this.columns.map(column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product[column.name]}</td>)}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.service?.id ?? '-'}</td>
+                        <td>
+                          {product.service ? (
+                            <button
+                              type="button"
+                              onClick={() => this.unlinkingModalHandler(product.id, product.service.id)}
+                              class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                            >
+                              Uninstall
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => this.linkingModalHandler(product.id)}
+                              class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                            >
+                              Link
+                            </button>
+                          )}
+                          {this.linkingIsVisible && (
+                            <flinkey-modal
+                              modalTitle="Link a new Service to Product"
+                              body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
+                              product={this.selectedProductId}
+                              linkedServices={this.activeServices}
+                            />
+                          )}
+                          {this.unlinkingIsVisible && (
+                            <flinkey-modal
+                              modalTitle="Unlink Service from Product"
+                              body="Unlink a Service from a Product by pressing Unlink."
+                              product={this.selectedProductId}
+                              service={this.selectedServiceId}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
