@@ -10,10 +10,4 @@ interface Product {
   service: Service;
 }
 
-interface Column {
-  name: string;
-  label: string;
-  isVisible: () => boolean;
-}
-
-export { Service, Product, Column };
+export { Service, Product };
