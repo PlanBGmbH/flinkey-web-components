@@ -1,45 +1,28 @@
 import { Component, h, State, Prop, EventEmitter, Event } from '@stencil/core';
-import { httpGet, HttpResponse } from '../../../utils/utils';
-import { Service } from '../flinkey-service-assigner.interfaces';
 
 @Component({
-  tag: 'flinkey-services-dropdown',
-  styleUrl: '../../../utils/common.css',
+  tag: 'flinkey-dropdown',
+  styleUrl: '../../utils/common.css',
   shadow: true,
 })
 export class ServiceDropdown {
-  @Prop() linkedServices: any;
-
-  @State() unlinkedServices: any = [];
+  @Prop() valuesForDropdown: Array<string | number | object> = [];
+  @Prop() defaultBtnText: string = 'Select';
 
   // Dropdown state managment
-  @State() dropdownIsOpen: boolean = false;
-  @State() dropDownValue: boolean = false;
+  @State() isDropdownOpen: boolean = false;
+  @State() dropdownHasValue: boolean = false;
 
-  @State() selectedService: number = 0;
+  // Sets dropdown value to selected item
+  @State() selectedValue: number | string = 0;
 
-  // Pass selected service to Modal
+  // Pass selected service to parent container
   @Event() valueChanged: EventEmitter<any>;
-  onServiceSelectedHandler(item: { id: number }) {
-    this.valueChanged.emit(item.id);
-    this.selectedService = item.id;
-    this.dropDownValue = true;
-    this.dropdownIsOpen = false;
-  }
-
-  fetchUnactiveServices() {
-    const searchParams = new URLSearchParams(`$filter=id in (${this.linkedServices}) eq false`);
-    return httpGet<Service[]>('services', searchParams)
-      .then((httpResponse: HttpResponse<Service[]>) => {
-        this.unlinkedServices = httpResponse.parsedBody;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  componentWillLoad() {
-    this.fetchUnactiveServices();
+  onServiceSelectedHandler(item: number | string) {
+    this.valueChanged.emit(item);
+    this.selectedValue = item;
+    this.dropdownHasValue = true;
+    this.isDropdownOpen = false;
   }
 
   render() {
@@ -52,9 +35,9 @@ export class ServiceDropdown {
             id="menu-button"
             aria-expanded="true"
             aria-haspopup="true"
-            onClick={() => (this.dropdownIsOpen = !this.dropdownIsOpen)}
+            onClick={() => (this.isDropdownOpen = !this.isDropdownOpen)}
           >
-            {!this.dropDownValue ? 'Link service' : this.selectedService}
+            {!this.dropdownHasValue ? this.defaultBtnText : this.selectedValue}
             <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
                 fill-rule="evenodd"
@@ -72,10 +55,10 @@ export class ServiceDropdown {
           aria-labelledby="menu-button"
           tabindex="-1"
         >
-          {this.dropdownIsOpen && (
-            <div class={`py-1 ${this.unlinkedServices.length !== 0 && 'overflow-y-scroll h-24'}`} role="none">
-              {this.unlinkedServices.length !== 0 ? (
-                this.unlinkedServices.map((items: { id: any }) => {
+          {this.isDropdownOpen && (
+            <div class={`py-1 ${this.valuesForDropdown.length !== 0 && 'overflow-y-scroll h-24'}`} role="none">
+              {this.valuesForDropdown.length !== 0 ? (
+                this.valuesForDropdown.map((items: any) => {
                   return (
                     <a
                       class="w-full text-black-700 block px-4 py-2 text-sm hover:bg-emerald-200"
@@ -84,12 +67,12 @@ export class ServiceDropdown {
                       id="menu-item-0"
                       onClick={() => this.onServiceSelectedHandler(items)}
                     >
-                      {items.id}
+                      {items}
                     </a>
                   );
                 })
               ) : (
-                <p class="text-xs text-center">0 unactive services</p>
+                <p class="text-xs text-center">0 elements found.</p>
               )}
             </div>
           )}
