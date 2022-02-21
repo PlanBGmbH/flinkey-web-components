@@ -1,13 +1,14 @@
 import { Component, h, State, Listen, Host, Prop } from '@stencil/core';
-import { Column, Product, Service } from './flinkey-service-assigner.interfaces';
+import { Product, Service } from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
+import {Column} from "../../shared/interfaces";
 
 @Component({
-  tag: 'flinkey-product-service-admin-table',
+  tag: 'flinkey-product-service-table',
   styleUrl: '../../utils/common.css',
   shadow: true,
 })
-export class ProductServiceAdminTable {
+export class ProductServiceTable {
   @Prop() isIdVisible: boolean = true;
   @Prop() isUniqueIdVisible: boolean = true;
   @Prop() isSerialNumberVisible: boolean = true;
@@ -15,10 +16,12 @@ export class ProductServiceAdminTable {
 
   @State() products: Product[] = [];
   @State() columns: Column[] = [
-    { name: 'id', label: 'ID', isVisible: () => this.isIdVisible },
-    { name: 'uniqueId', label: 'Unique ID', isVisible: () => this.isUniqueIdVisible },
-    { name: 'serialNumber', label: 'Serial Number', isVisible: () => this.isSerialNumberVisible },
-    { name: 'sapNumber', label: 'SAP Number', isVisible: () => this.isSapNumberVisible },
+    { field: 'id', label: 'ID', isVisible: () => this.isIdVisible },
+    { field: 'uniqueId', label: 'Unique ID', isVisible: () => this.isUniqueIdVisible },
+    { field: 'serialNumber', label: 'Serial Number', isVisible: () => this.isSerialNumberVisible },
+    { field: 'sapNumber', label: 'SAP Number', isVisible: () => this.isSapNumberVisible },
+    { field: 'service.id', label: 'Service ID', isVisible: () => this.isSapNumberVisible },
+    { label: 'Action', isVisible: () => this.isSapNumberVisible },
   ];
 
   // Modal
@@ -32,7 +35,7 @@ export class ProductServiceAdminTable {
   }
 
   buildProductSelectFilter() {
-    const visibleColumns: string[] = this.columns.filter((column: Column) => column.isVisible).map((column: Column) => column.name);
+    const visibleColumns: string[] = this.columns.filter((column: Column) => column.isVisible).map((column: Column) => column.field);
     const selectFilter = visibleColumns.join(', ');
     return selectFilter;
   }
@@ -99,36 +102,9 @@ export class ProductServiceAdminTable {
 
   render() {
     return (
-      <Host class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    {this.columns.map(
-                      column =>
-                        column.isVisible && (
-                          <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div>{column.label}</div>
-                          </th>
-                        ),
-                    )}
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <div>Active Service</div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  {this.products?.map(product => {
-                    return (
-                      <tr class="text-center">
-                        {this.columns.map(column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{product[column.name]}</td>)}
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.service?.id ?? '-'}</td>
-                        <td>
+      <Host>
+        <flinkey-table columns={this.columns} data={this.products}></flinkey-table>
+        {/*<td>
                           {product.service ? (
                             <button
                               type="button"
@@ -162,15 +138,7 @@ export class ProductServiceAdminTable {
                               service={this.selectedServiceId}
                             />
                           )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+                        </td>*/}
       </Host>
     );
   }

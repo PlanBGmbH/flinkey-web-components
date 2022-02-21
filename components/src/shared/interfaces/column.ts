@@ -1,5 +1,5 @@
 export interface Column {
-  name: string;
+  field?: string;
   label: string;
   isVisible: () => boolean;
 }

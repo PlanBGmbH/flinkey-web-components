@@ -6,9 +6,25 @@ import {Column} from "../../interfaces";
   styleUrl: '../../utils/common.css',
   shadow: true,
 })
-export class ProductServiceAdminTable {
+export class Table {
   @Prop() columns: Column[];
   @Prop() data: any[];
+
+  getFieldValue(field: string, entry: any) {
+    const path = field.split('.');
+    let fieldValue: any;
+
+    for (const pathItem of path) {
+      fieldValue = entry[pathItem];
+
+      if (!fieldValue) {
+        fieldValue = '-';
+        break;
+      }
+    }
+
+    return fieldValue;
+  }
 
   render() {
     return (
@@ -33,7 +49,7 @@ export class ProductServiceAdminTable {
                 {this.data?.map(entry => {
                   return (
                     <tr class="text-center">
-                      {this.columns.map(column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{entry[column.name]}</td>)}
+                      {this.columns.map(column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.getFieldValue(column.field, entry)}</td>)}
                     </tr>
                   );
                 })}
