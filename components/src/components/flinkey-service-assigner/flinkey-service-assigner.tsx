@@ -1,7 +1,7 @@
 import { Component, h, State, Listen, Host, Prop } from '@stencil/core';
 import { Product, Service } from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
-import {Column} from "../../shared/interfaces";
+import { Column } from '../../shared/interfaces';
 
 @Component({
   tag: 'flinkey-product-service-table',
@@ -35,7 +35,7 @@ export class ProductServiceTable {
   }
 
   buildProductSelectFilter() {
-    const visibleColumns: string[] = this.columns.filter((column: Column) => column.isVisible).map((column: Column) => column.field);
+    const visibleColumns: string[] = this.columns.filter((column: Column) => column.isVisible && column.field && !column.field.includes('.')).map((column: Column) => column.field);
     const selectFilter = visibleColumns.join(', ');
     return selectFilter;
   }
@@ -103,7 +103,7 @@ export class ProductServiceTable {
   render() {
     return (
       <Host>
-        <flinkey-table columns={this.columns} data={this.products}></flinkey-table>
+        <flinkey-table columns={this.columns} data={this.products} />
         {/*<td>
                           {product.service ? (
                             <button
