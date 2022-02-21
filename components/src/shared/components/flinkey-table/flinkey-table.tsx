@@ -15,7 +15,11 @@ export class Table {
     let fieldValue: any;
 
     for (const pathItem of path) {
-      fieldValue = entry[pathItem];
+      if (!fieldValue) {
+        fieldValue = entry[pathItem];
+      } else {
+        fieldValue = fieldValue[pathItem];
+      }
 
       if (!fieldValue) {
         fieldValue = '-';
