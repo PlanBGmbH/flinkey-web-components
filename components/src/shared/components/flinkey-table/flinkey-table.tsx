@@ -11,7 +11,7 @@ export class Table {
   @Prop() data: any[];
 
   getFieldValue(field: string, entry: any) {
-    const path = field.split('.');
+    const path = field?.split('.') ?? [];
     let fieldValue: any;
 
     for (const pathItem of path) {
