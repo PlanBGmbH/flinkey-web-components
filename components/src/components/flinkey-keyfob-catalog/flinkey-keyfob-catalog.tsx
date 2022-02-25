@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Host, h, State, Listen } from '@stencil/core';
 import { httpGet, HttpResponse } from '../../utils/utils';
 import { Key } from './flinkey-keyfob-catalog.interfaces';
 
@@ -12,6 +12,8 @@ export class FlinkeyKeyfobCatalog {
   @State() keys: Key[];
   @State() dropdownOpen: boolean;
 
+  dropdownPlaceholderLabel: string = 'Choose brand';
+
   componentWillLoad() {
     return httpGet<string[]>('brands')
       .then((httpResponse: HttpResponse<string[]>) => {
@@ -22,9 +24,10 @@ export class FlinkeyKeyfobCatalog {
       });
   }
 
-  onBrandChanged(event: Event) {
-    const brand = (event.target as HTMLSelectElement).value;
-    const path = `brands/${brand}/keys`;
+  @Listen('selectedItemChanged')
+  brandChangedHandler(event: CustomEvent<string>) {
+    const selectedBrand = event.detail;
+    const path = `brands/${selectedBrand}/keys`;
     const searchParams = new URLSearchParams([
       ['$select', 'boxName'],
       ['$expand', 'keyForm($select=imageUrl)'],
@@ -41,19 +44,7 @@ export class FlinkeyKeyfobCatalog {
   render() {
     return (
       <Host>
-        <div class="mb-4">
-          <select
-            onChange={e => this.onBrandChanged(e)}
-            class="font-sans mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option selected disabled hidden>
-              Choose brand
-            </option>
-            {this.brands?.map(brand => (
-              <option value={brand}>{brand}</option>
-            ))}
-          </select>
-        </div>
+        <flinkey-dropdown placeholderItemLabel={this.dropdownPlaceholderLabel} data={this.brands} />
         <div class="grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
           {this.keys?.map(key => (
             <div class="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
