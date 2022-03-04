@@ -21,7 +21,7 @@ export class ProductServiceTable {
     { field: 'serialNumber', label: 'Serial Number', isVisible: () => this.isSerialNumberVisible },
     { field: 'sapNumber', label: 'SAP Number', isVisible: () => this.isSapNumberVisible },
     { field: 'service.id', label: 'Service ID', isVisible: () => this.isSapNumberVisible },
-    { label: 'Action', isVisible: () => this.isSapNumberVisible },
+    { label: 'Action', isVisible: true, cell: product => this.getProductActions(product) },
   ];
 
   // Modal
@@ -89,6 +89,46 @@ export class ProductServiceTable {
     }
   }
 
+  getProductActions(product: Product) {
+    return (
+      <td>
+        {product.service ? (
+          <button
+            type="button"
+            onClick={() => this.unlinkingModalHandler(product.id, product.service.id)}
+            class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            Uninstall
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => this.linkingModalHandler(product.id)}
+            class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            Link
+          </button>
+        )}
+        {this.linkingIsVisible && (
+          <flinkey-modal
+            modalTitle="Link a new Service to Product"
+            body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
+            product={this.selectedProductId}
+            linkedServices={{} /*this.activeServices*/}
+          />
+        )}
+        {this.unlinkingIsVisible && (
+          <flinkey-modal
+            modalTitle="Unlink Service from Product"
+            body="Unlink a Service from a Product by pressing Unlink."
+            product={this.selectedProductId}
+            service={this.selectedServiceId}
+          />
+        )}
+      </td>
+    );
+  }
+
   linkingModalHandler(productId: number) {
     this.linkingIsVisible = true;
     this.selectedProductId = productId;
@@ -101,45 +141,6 @@ export class ProductServiceTable {
   }
 
   render() {
-    return (
-      <Host>
-        <flinkey-table columns={this.columns} data={this.products} />
-        {/*<td>
-                          {product.service ? (
-                            <button
-                              type="button"
-                              onClick={() => this.unlinkingModalHandler(product.id, product.service.id)}
-                              class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                            >
-                              Uninstall
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => this.linkingModalHandler(product.id)}
-                              class="px-6 py-4 mt-px whitespace-nowrap text-right text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                            >
-                              Link
-                            </button>
-                          )}
-                          {this.linkingIsVisible && (
-                            <flinkey-modal
-                              modalTitle="Link a new Service to Product"
-                              body="Here, you can link a Service to a Product. Go ahead and choose a Service to link."
-                              product={this.selectedProductId}
-                              linkedServices={this.activeServices}
-                            />
-                          )}
-                          {this.unlinkingIsVisible && (
-                            <flinkey-modal
-                              modalTitle="Unlink Service from Product"
-                              body="Unlink a Service from a Product by pressing Unlink."
-                              product={this.selectedProductId}
-                              service={this.selectedServiceId}
-                            />
-                          )}
-                        </td>*/}
-      </Host>
-    );
+    return <flinkey-table columns={this.columns} data={this.products} />;
   }
 }

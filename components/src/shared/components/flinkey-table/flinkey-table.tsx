@@ -35,6 +35,18 @@ export class Table {
     return fieldValue;
   }
 
+  getVisibility(visibility: (() => boolean) | boolean) {
+    let result: boolean;
+
+    if (visibility instanceof Function) {
+      result = visibility();
+    } else {
+      result = visibility;
+    }
+
+    return result;
+  }
+
   render() {
     return (
       <Host class="flex flex-col">
@@ -46,7 +58,7 @@ export class Table {
                   <tr>
                     {this.columns?.map(
                       column =>
-                        column.isVisible && (
+                        this.getVisibility(column.isVisible) && (
                           <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             <div>{column.label}</div>
                           </th>
@@ -59,7 +71,10 @@ export class Table {
                     return (
                       <tr class="text-center">
                         {this.columns?.map(
-                          column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.getFieldValue(column, entry)}</td>,
+                          column =>
+                            this.getVisibility(column.isVisible) && (
+                              <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.getFieldValue(column, entry)}</td>
+                            ),
                         )}
                       </tr>
                     );

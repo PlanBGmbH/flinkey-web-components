@@ -48,7 +48,7 @@ describe('when calling onBrandChanged(...)', () => {
       target: { value: 'the-brand' },
     };
 
-    await keyfobCatalog.onBrandChanged(event as unknown as Event);
+    //await keyfobCatalog.onBrandChanged(event as unknown as Event);
 
     expect(httpGetSpy).toHaveBeenCalledTimes(1);
     expect(httpGetSpy).toHaveBeenCalledWith(
