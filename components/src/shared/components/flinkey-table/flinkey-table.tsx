@@ -10,20 +10,25 @@ export class Table {
   @Prop() columns: Column[];
   @Prop() data: any[];
 
-  getFieldValue(field: string, entry: any) {
-    const path = field?.split('.') ?? [];
+  getFieldValue(column: Column, entry: any) {
     let fieldValue: any;
 
-    for (const pathItem of path) {
-      if (!fieldValue) {
-        fieldValue = entry[pathItem];
-      } else {
-        fieldValue = fieldValue[pathItem];
-      }
+    if (column.cell) {
+      fieldValue = column.cell(entry);
+    } else {
+      const path = column.field?.split('.') ?? [];
 
-      if (!fieldValue) {
-        fieldValue = '-';
-        break;
+      for (const pathItem of path) {
+        if (!fieldValue) {
+          fieldValue = entry[pathItem];
+        } else {
+          fieldValue = fieldValue[pathItem];
+        }
+
+        if (!fieldValue) {
+          fieldValue = '-';
+          break;
+        }
       }
     }
 
@@ -53,8 +58,8 @@ export class Table {
                   {this.data?.map(entry => {
                     return (
                       <tr class="text-center">
-                        {this.columns.map(
-                          column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.getFieldValue(column.field, entry)}</td>,
+                        {this.columns?.map(
+                          column => column.isVisible && <td class="px-6 py-4 whitespace-wrap text-sm font-medium text-gray-900">{this.getFieldValue(column, entry)}</td>,
                         )}
                       </tr>
                     );
