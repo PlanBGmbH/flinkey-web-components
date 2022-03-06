@@ -12,7 +12,7 @@ export class FlinkeyButton {
   @Prop() size: ButtonSize;
 
   @Event() buttonClicked: EventEmitter<unknown>;
-  onButtonClickedHandler() {
+  buttonClickedHandler() {
     this.buttonClicked.emit();
   }
 
@@ -54,7 +54,7 @@ export class FlinkeyButton {
 
   render() {
     return (
-      <button type="button" class={this.getButtonClasses()} onClick={() => this.onButtonClickedHandler()}>
+      <button type="button" class={this.getButtonClasses()} onClick={() => this.buttonClickedHandler()}>
         {this.text}
       </button>
     );
