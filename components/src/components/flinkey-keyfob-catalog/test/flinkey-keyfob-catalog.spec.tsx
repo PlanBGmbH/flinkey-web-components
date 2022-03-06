@@ -44,11 +44,9 @@ describe('when calling onBrandChanged(...)', () => {
       ];
       return Promise.resolve(resp);
     });
-    const event = {
-      target: { value: 'the-brand' },
-    };
+    const event: CustomEvent<string> = { detail: 'the-brand' } as CustomEvent<string>;
 
-    //await keyfobCatalog.onBrandChanged(event as unknown as Event);
+    await keyfobCatalog.brandChangedHandler(event);
 
     expect(httpGetSpy).toHaveBeenCalledTimes(1);
     expect(httpGetSpy).toHaveBeenCalledWith(
