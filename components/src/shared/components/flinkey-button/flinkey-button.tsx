@@ -17,7 +17,7 @@ export class FlinkeyButton {
   }
 
   getButtonClasses() {
-    let classes = 'font-sans inline-flex items-center border font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
+    let classes = 'font-sans inline-flex items-center border font-medium focus:outline-none';
 
     switch (this.size) {
       case ButtonSize.XS:
@@ -39,13 +39,13 @@ export class FlinkeyButton {
 
     switch (this.type) {
       case ButtonType.Primary:
-        classes += ' shadow-sm border-transparent text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500';
+        classes += ' shadow-sm border-transparent text-white bg-indigo-600 hover:bg-indigo-700';
         break;
       case ButtonType.Secondary:
-        classes += ' border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-500';
+        classes += ' border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200';
         break;
       case ButtonType.White:
-        classes += ' border-gray-300 shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:ring-indigo-500';
+        classes += ' border-gray-300 shadow-sm text-gray-700 bg-white hover:bg-gray-50';
         break;
     }
 
