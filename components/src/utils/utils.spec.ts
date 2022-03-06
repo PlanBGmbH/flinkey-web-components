@@ -60,10 +60,15 @@ describe('Utils', () => {
   describe('when calling setDefaultHeaders() function', () => {
     it('returns expected list of default HTTP headers', () => {
       Globals.token = 'SomeTestTokenValue';
+      Globals.apiKey = 'abc123';
+      Globals.customerId = 241;
+
       expect(setDefaultHeaders()).toEqual({
-        'Authorization': 'Bearer SomeTestTokenValue',
+        'Authorization': `Bearer SomeTestTokenValue`,
+        'flinkey-API-Key': 'abc123',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Customer-ID': `241`,
       });
     });
   });
