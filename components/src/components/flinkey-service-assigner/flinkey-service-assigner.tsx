@@ -1,4 +1,4 @@
-import { Component, h, State, Listen, Host, Prop } from '@stencil/core';
+import { Component, h, State, Listen, Prop } from '@stencil/core';
 import { Product, Service } from './flinkey-service-assigner.interfaces';
 import { httpGet, HttpResponse } from '../../utils/utils';
 import { Column } from '../../shared/interfaces';

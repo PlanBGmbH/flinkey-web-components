@@ -17,7 +17,7 @@ export class ServiceDropdown {
   @State() selectedValue: number | string = 0;
 
   // Pass selected service to parent container
-  @Event() valueChanged: EventEmitter<any>;
+  @Event() valueChanged: EventEmitter<number | string>;
   onServiceSelectedHandler(item: number | string) {
     this.valueChanged.emit(item);
     this.selectedValue = item;

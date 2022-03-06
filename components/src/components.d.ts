@@ -5,8 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+import { ButtonSize, ButtonType } from './shared/enums';
 import { Column } from './shared/interfaces';
 export namespace Components {
+  interface FlinkeyButton {
+    size: ButtonSize;
+    text: string;
+    type: ButtonType;
+  }
   interface FlinkeyDropdown {
     data: any[];
     label: string;
@@ -38,6 +44,11 @@ export namespace Components {
   }
 }
 declare global {
+  interface HTMLFlinkeyButtonElement extends Components.FlinkeyButton, HTMLStencilElement {}
+  var HTMLFlinkeyButtonElement: {
+    prototype: HTMLFlinkeyButtonElement;
+    new (): HTMLFlinkeyButtonElement;
+  };
   interface HTMLFlinkeyDropdownElement extends Components.FlinkeyDropdown, HTMLStencilElement {}
   var HTMLFlinkeyDropdownElement: {
     prototype: HTMLFlinkeyDropdownElement;
@@ -69,6 +80,7 @@ declare global {
     new (): HTMLFlinkeyTableElement;
   };
   interface HTMLElementTagNameMap {
+    'flinkey-button': HTMLFlinkeyButtonElement;
     'flinkey-dropdown': HTMLFlinkeyDropdownElement;
     'flinkey-keyfob-catalog': HTMLFlinkeyKeyfobCatalogElement;
     'flinkey-modal': HTMLFlinkeyModalElement;
@@ -78,6 +90,11 @@ declare global {
   }
 }
 declare namespace LocalJSX {
+  interface FlinkeyButton {
+    size?: ButtonSize;
+    text?: string;
+    type?: ButtonType;
+  }
   interface FlinkeyDropdown {
     data?: any[];
     label?: string;
@@ -112,6 +129,7 @@ declare namespace LocalJSX {
     data?: any[];
   }
   interface IntrinsicElements {
+    'flinkey-button': FlinkeyButton;
     'flinkey-dropdown': FlinkeyDropdown;
     'flinkey-keyfob-catalog': FlinkeyKeyfobCatalog;
     'flinkey-modal': FlinkeyModal;
@@ -124,6 +142,7 @@ export { LocalJSX as JSX };
 declare module '@stencil/core' {
   export namespace JSX {
     interface IntrinsicElements {
+      'flinkey-button': LocalJSX.FlinkeyButton & JSXBase.HTMLAttributes<HTMLFlinkeyButtonElement>;
       'flinkey-dropdown': LocalJSX.FlinkeyDropdown & JSXBase.HTMLAttributes<HTMLFlinkeyDropdownElement>;
       'flinkey-keyfob-catalog': LocalJSX.FlinkeyKeyfobCatalog & JSXBase.HTMLAttributes<HTMLFlinkeyKeyfobCatalogElement>;
       'flinkey-modal': LocalJSX.FlinkeyModal & JSXBase.HTMLAttributes<HTMLFlinkeyModalElement>;
