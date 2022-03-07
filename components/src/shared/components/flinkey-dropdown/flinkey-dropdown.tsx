@@ -27,7 +27,7 @@ export class FlinkeyDropdown {
       value = dataItem[field];
     } else if (typeof dataItem === 'boolean') {
       value = (dataItem as boolean).toString();
-    } else {
+    } else if (typeof dataItem === 'string' || typeof dataItem === 'number') {
       value = dataItem;
     }
 

@@ -107,7 +107,9 @@ for (const testCase of [
 describe('when calling buttonClickedHandler()', () => {
   it('should emit buttonClicked event', () => {
     const button = new FlinkeyButton();
-    const emitSpy = jest.spyOn(button.buttonClicked, 'emit');
+    const emitSpy = jest.spyOn(button.buttonClicked, 'emit').mockImplementationOnce(() => {
+      return {} as CustomEvent<unknown>;
+    });
 
     button.buttonClickedHandler();
 
