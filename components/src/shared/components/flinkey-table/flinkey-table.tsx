@@ -6,7 +6,7 @@ import { Column } from '../../interfaces';
   styleUrl: '../../../utils/common.css',
   shadow: true,
 })
-export class Table {
+export class FlinkeyTable {
   @Prop() columns: Column[];
   @Prop() data: any[];
 
