@@ -29,7 +29,7 @@ describe('flinkey-dropdown', () => {
 
   for (const testCase of [
     {
-      dataItem: { id: 21, name: 'Foobar' },
+      dataItem: { name: 'Foobar' },
       field: 'name',
       expectedValue: 'Foobar',
     },
