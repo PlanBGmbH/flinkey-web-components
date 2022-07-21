@@ -51,12 +51,15 @@ jobs:
         with:
           name: flinkey_web_components_artifact
           path: components
+
   pre_publish_validation:
     name: Pre-Publish Validation
     runs-on: ubuntu-latest
     needs: build
     outputs:
       version_increased: ${{ steps.check_package_version.outputs.version_increased }}
+      package_version: ${{ steps.check_package_version.outputs.package_version }}
+
     strategy:
       matrix:
         node-version: [16.x]
@@ -66,18 +69,35 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+
       - name: Download artifact
         uses: actions/download-artifact@v2.1.0
         with:
           name: flinkey_web_components_artifact
+
+      - name: Read PR versions
+        if: ${{ env.skipVersionValidation == 'False' }}
+        shell: bash
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/scripts/read_versions.sh"
+          "${GITHUB_WORKSPACE}/.github/workflows/scripts/read_versions.sh"
+
+      - name: Check PR package version
+        if: ${{ env.skipVersionValidation == 'False' }}
+        env:
+          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
+          PACKAGE_LOCK_VERSION: ${{ env.PACKAGE_LOCK_VERSION }}
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/scripts/validate_versions.sh"
+          "${GITHUB_WORKSPACE}/.github/workflows/scripts/validate_versions.sh"
+
       - name: Check for package version update
         id: check_package_version
         run: |
-          localPackageVersion=$( jq -r '.version' package.json )
-          echo "Local package version: $localPackageVersion"
+          echo "Local package version: ${{ env.PACKAGE_VERSION }}"
           npmPackageVersion=$( npm show @planbgmbh/flinkey-web-components version )
           echo "Latest package version on NPM: $npmPackageVersion"
-          if $(dpkg --compare-versions $localPackageVersion gt $npmPackageVersion);
+          if $(dpkg --compare-versions ${{ env.PACKAGE_VERSION }} gt $npmPackageVersion);
           then
             echo '::set-output name=version_increased::True'
             echo 'Version updated'
@@ -85,6 +105,8 @@ jobs:
             echo '::set-output name=version_increased::False'
             echo 'Version did not update'
           fi
+          echo '::set-output name=package_version::${{ env.PACKAGE_VERSION }}'
+
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -102,14 +124,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+
       - name: Download artifact
         uses: actions/download-artifact@v2.1.0
         with:
           name: flinkey_web_components_artifact
+
       - name: Prepare GitHub release
         run: |
-          packageVersion=$( jq -r '.version' package.json )
-          echo "packageVersion=$packageVersion" >> $GITHUB_ENV
+          echo "packageVersion=${{ needs.pre_publish_validation.outputs.package_version }}" >> $GITHUB_ENV
           zipName="flinkey-web-components-v${packageVersion}.zip"
           echo "zipName=$zipName" >> $GITHUB_ENV
           changelog=$(<CHANGELOG.md)
@@ -117,11 +140,13 @@ jobs:
           echo "$changelog" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           rm CHANGELOG.md
+
       - name: Publish package on NPM
         run: |
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
       - name: Create GitHub release artifact
         run: |
           wget --quiet --method GET -O npmPackageData.json "http://registry.npmjs.org/@planbgmbh/flinkey-web-components/${{ env.packageVersion }}"
@@ -131,6 +156,7 @@ jobs:
           tar -zxvf ./npmPackage.tgz -C ./unpackedPackage
           cd ./unpackedPackage/package
           zip -r "../../${{ env.zipName }}" *
+
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
